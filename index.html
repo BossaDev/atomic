@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Atomic</title>
+
+    <script src="./index.js"></script>
+    <script src="./blocks/vertical_extensions.js"></script>
+    <script src="./blocks/math.js"></script>
+    <script src="./blocks/text.js"></script>
+
+    <script src="./blocks/atomic_transaction.js"></script>
+    <script src="./blocks/atomic_transaction_options.js"></script>
+    <script src="./blocks/eth_transfer.js"></script>
+    <script src="./blocks/erc20_transfer.js"></script>
+    <script src="./blocks/uniswap_swap.js"></script>
+    <script src="./blocks/aave_flashloan.js"></script>
+    <script src="./blocks/ens_resolver.js"></script>
+    <script src="./blocks/selfdestruct.js"></script>
+
+    <script src="./blocks/toolbox.js"></script>
+
+    <script>
+      'use strict';
+
+      var workspace = null;
+
+      function start() {
+        var soundsEnabled = null;
+        if (sessionStorage) {
+          // Restore sounds state.
+          soundsEnabled = sessionStorage.getItem('soundsEnabled');
+          if (soundsEnabled === null) {
+            soundsEnabled = true;
+          } else {
+            soundsEnabled = (soundsEnabled === 'true');
+          }
+        } else {
+          soundsEnabled = true;
+        }
+
+        // Setup blocks
+        // Parse the URL arguments.
+        var match = location.search.match(/dir=([^&]+)/);
+        var rtl = match && match[1] == 'rtl';
+        // document.forms.options.elements.dir.selectedIndex = Number(rtl);
+        var toolbox = getToolboxElement();
+        // document.forms.options.elements.toolbox.selectedIndex =
+          // toolbox ? 1: 0;
+
+        match = location.search.match(/side=([^&]+)/);
+
+        var side = match ? match[1] : 'start';
+
+        // document.forms.options.elements.side.value = side;
+
+        match = location.search.match(/locale=([^&]+)/);
+        var locale = match ? match[1] : 'en';
+        // Blockly.ScratchMsgs.setLocale(locale);
+        // document.forms.options.elements.locale.value = locale;
+
+        // Create main workspace.
+        workspace = Blockly.inject('blocklyDiv', {
+          comments: true,
+          disable: false,
+          collapse: false,
+          media: './media/',
+          readOnly: false,
+          rtl: rtl,
+          scrollbars: true,
+          toolbox: toolbox,
+          toolboxPosition: side == 'top' || side == 'start' ? 'start' : 'end',
+          horizontalLayout: side == 'top' || side == 'bottom',
+          sounds: soundsEnabled,
+          zoom: {
+            controls: true,
+            wheel: true,
+            startScale: 0.85,
+            maxScale: 4,
+            minScale: 0.25,
+            scaleSpeed: 1.1
+          },
+          colours: {
+            fieldShadow: 'rgba(255, 255, 255, 0.3)',
+            dragShadowOpacity: 0.6
+          }
+        });
+      }
+
+      function getToolboxElement() {
+        var match = location.search.match(/toolbox=([^&]+)/);
+        return document.getElementById('toolbox-' + (match ? match[1] : 'categories'));
+      }
+
+    </script>
+
+    <style>
+      html, body {
+        height: 100%;
+      }
+
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+        overflow: hidden;
+      }
+
+      #blocklyDiv {
+        float: right;
+        height: 100%;
+        width: 100%;
+      }
+
+      #collaborators {
+        float: right;
+        width: 30px;
+        margin-left: 10px;
+      }
+
+      #collaborators > img {
+        margin-right: 5px;
+        height: 30px;
+        padding-bottom: 5px;
+        width: 30px;
+        border-radius: 3px;
+      }
+
+      #importExport {
+        font-family: monospace;
+      }
+    </style>
+  </head>
+
+  <body onload="start()">
+    <div id="blocklyDiv"></div>
+  </body>
+</html>
