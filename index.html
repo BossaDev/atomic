@@ -28,38 +28,6 @@
       var workspace = null;
 
       function start() {
-        var soundsEnabled = null;
-        if (sessionStorage) {
-          // Restore sounds state.
-          soundsEnabled = sessionStorage.getItem('soundsEnabled');
-          if (soundsEnabled === null) {
-            soundsEnabled = true;
-          } else {
-            soundsEnabled = (soundsEnabled === 'true');
-          }
-        } else {
-          soundsEnabled = true;
-        }
-
-        // Setup blocks
-        // Parse the URL arguments.
-        var match = location.search.match(/dir=([^&]+)/);
-        var rtl = match && match[1] == 'rtl';
-        // document.forms.options.elements.dir.selectedIndex = Number(rtl);
-        var toolbox = getToolboxElement();
-        // document.forms.options.elements.toolbox.selectedIndex =
-          // toolbox ? 1: 0;
-
-        match = location.search.match(/side=([^&]+)/);
-
-        var side = match ? match[1] : 'start';
-
-        // document.forms.options.elements.side.value = side;
-
-        match = location.search.match(/locale=([^&]+)/);
-        var locale = match ? match[1] : 'en';
-        // Blockly.ScratchMsgs.setLocale(locale);
-        // document.forms.options.elements.locale.value = locale;
 
         // Create main workspace.
         workspace = Blockly.inject('blocklyDiv', {
@@ -68,12 +36,12 @@
           collapse: false,
           media: './media/',
           readOnly: false,
-          rtl: rtl,
+          rtl: null,
           scrollbars: true,
-          toolbox: toolbox,
-          toolboxPosition: side == 'top' || side == 'start' ? 'start' : 'end',
-          horizontalLayout: side == 'top' || side == 'bottom',
-          sounds: soundsEnabled,
+          toolbox: getToolboxElement(),
+          toolboxPosition: "start",
+          horizontalLayout: false,
+          sounds: true,
           zoom: {
             controls: true,
             wheel: true,
