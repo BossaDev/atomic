@@ -1,4 +1,4 @@
-Blockly.Blocks["eth_transfer"] = {
+const eth_transfer = {
   /**
    * @this Blockly.Block
    */
@@ -61,6 +61,9 @@ Blockly.Blocks["eth_transfer"] = {
       '</block>'
   }
 };
+
+
+Blockly.Blocks["eth_transfer"] = eth_transfer
 
 Blockly.Blocks["eth-unit-list"] = {
   /**

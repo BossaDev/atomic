@@ -1,0 +1,195 @@
+{
+  "contracts": {
+    "contracts/Atomic.sol": {
+      "Atomic": {
+        "abi": [
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "transactions",
+                "type": "bytes"
+              }
+            ],
+            "payable": true,
+            "stateMutability": "payable",
+            "type": "constructor"
+          }
+        ],
+        "evm": {
+          "bytecode": {
+            "linkReferences": {},
+            "object": "60806040526040516101ac3803806101ac8339818101604052602081101561002657600080fd5b810190808051604051939291908464010000000082111561004657600080fd5b8382019150602082018581111561005c57600080fd5b825186600182028301116401000000008211171561007957600080fd5b8083526020830192505050908051906020019080838360005b838110156100ad578082015181840152602081019050610092565b50505050905090810190601f1680156100da5780820380516001836020036101000a031916815260200191505b50604052505050805160205b8181101561015d578083015160208201840151606083018501516080840186016000808383868865befe6f672000f16000811415610143577f4f6e65206f6620746865207472616e73616374696f6e73206661696c656400006000fd5b602080601f850104026080018601955050505050506100e6565b505050603e8061016e6000396000f3fe6080604052600080fdfea265627a7a72315820041dbda5145f15a77f9e0bc066316deb0327894eb4c9bb51cfb6da2cafed291b64736f6c634300050f0032",
+            "opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x40 MLOAD PUSH2 0x1AC CODESIZE SUB DUP1 PUSH2 0x1AC DUP4 CODECOPY DUP2 DUP2 ADD PUSH1 0x40 MSTORE PUSH1 0x20 DUP2 LT ISZERO PUSH2 0x26 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST DUP2 ADD SWAP1 DUP1 DUP1 MLOAD PUSH1 0x40 MLOAD SWAP4 SWAP3 SWAP2 SWAP1 DUP5 PUSH5 0x100000000 DUP3 GT ISZERO PUSH2 0x46 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST DUP4 DUP3 ADD SWAP2 POP PUSH1 0x20 DUP3 ADD DUP6 DUP2 GT ISZERO PUSH2 0x5C JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST DUP3 MLOAD DUP7 PUSH1 0x1 DUP3 MUL DUP4 ADD GT PUSH5 0x100000000 DUP3 GT OR ISZERO PUSH2 0x79 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST DUP1 DUP4 MSTORE PUSH1 0x20 DUP4 ADD SWAP3 POP POP POP SWAP1 DUP1 MLOAD SWAP1 PUSH1 0x20 ADD SWAP1 DUP1 DUP4 DUP4 PUSH1 0x0 JUMPDEST DUP4 DUP2 LT ISZERO PUSH2 0xAD JUMPI DUP1 DUP3 ADD MLOAD DUP2 DUP5 ADD MSTORE PUSH1 0x20 DUP2 ADD SWAP1 POP PUSH2 0x92 JUMP JUMPDEST POP POP POP POP SWAP1 POP SWAP1 DUP2 ADD SWAP1 PUSH1 0x1F AND DUP1 ISZERO PUSH2 0xDA JUMPI DUP1 DUP3 SUB DUP1 MLOAD PUSH1 0x1 DUP4 PUSH1 0x20 SUB PUSH2 0x100 EXP SUB NOT AND DUP2 MSTORE PUSH1 0x20 ADD SWAP2 POP JUMPDEST POP PUSH1 0x40 MSTORE POP POP POP DUP1 MLOAD PUSH1 0x20 JUMPDEST DUP2 DUP2 LT ISZERO PUSH2 0x15D JUMPI DUP1 DUP4 ADD MLOAD PUSH1 0x20 DUP3 ADD DUP5 ADD MLOAD PUSH1 0x60 DUP4 ADD DUP6 ADD MLOAD PUSH1 0x80 DUP5 ADD DUP7 ADD PUSH1 0x0 DUP1 DUP4 DUP4 DUP7 DUP9 PUSH6 0xBEFE6F672000 CALL PUSH1 0x0 DUP2 EQ ISZERO PUSH2 0x143 JUMPI PUSH32 0x4F6E65206F6620746865207472616E73616374696F6E73206661696C65640000 PUSH1 0x0 REVERT JUMPDEST PUSH1 0x20 DUP1 PUSH1 0x1F DUP6 ADD DIV MUL PUSH1 0x80 ADD DUP7 ADD SWAP6 POP POP POP POP POP POP PUSH2 0xE6 JUMP JUMPDEST POP POP POP PUSH1 0x3E DUP1 PUSH2 0x16E PUSH1 0x0 CODECOPY PUSH1 0x0 RETURN INVALID PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH6 0x627A7A723158 KECCAK256 DIV SAR 0xBD 0xA5 EQ 0x5F ISZERO 0xA7 PUSH32 0x9E0BC066316DEB0327894EB4C9BB51CFB6DA2CAFED291B64736F6C634300050F STOP ORIGIN ",
+            "sourceMap": "25:1128:0:-;;;389:762;;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;389:762:0;;;;;;;;;;;;;19:11:-1;14:3;11:20;8:2;;;44:1;41;34:12;8:2;71:11;66:3;62:21;55:28;;123:4;118:3;114:14;159:9;141:16;138:31;135:2;;;182:1;179;172:12;135:2;219:3;213:10;330:9;325:1;311:12;307:20;289:16;285:43;282:58;261:11;247:12;244:29;233:115;230:2;;;361:1;358;351:12;230:2;384:12;379:3;372:25;420:4;415:3;411:14;404:21;;0:432;;389:762:0;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;99:1;94:3;90:11;84:18;80:1;75:3;71:11;64:39;52:2;49:1;45:10;40:15;;8:100;;;12:14;389:762:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;497:12;491:19;532:4;549:550;563:6;560:1;557:13;549:550;;;627:1;613:12;609:20;603:27;691:4;688:1;684:12;670;666:31;660:38;764:4;761:1;757:12;743;739:31;733:38;825:4;822:1;818:12;804;800:31;917:1;914;902:10;896:4;889:5;885:2;868:15;863:56;951:1;942:7;939:14;936:2;;;966:32;963:1;956:43;936:2;1078:4;1071;1064;1052:10;1048:21;1044:32;1040:43;1034:4;1030:54;1027:1;1023:62;1018:67;;575:524;;;;;549:550;;;463:646;;;25:1128;;;;;;"
+          },
+          "deployedBytecode": {
+            "linkReferences": {},
+            "object": "6080604052600080fdfea265627a7a72315820041dbda5145f15a77f9e0bc066316deb0327894eb4c9bb51cfb6da2cafed291b64736f6c634300050f0032",
+            "opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH6 0x627A7A723158 KECCAK256 DIV SAR 0xBD 0xA5 EQ 0x5F ISZERO 0xA7 PUSH32 0x9E0BC066316DEB0327894EB4C9BB51CFB6DA2CAFED291B64736F6C634300050F STOP ORIGIN ",
+            "sourceMap": "25:1128:0:-;;;;;"
+          },
+          "methodIdentifiers": {}
+        }
+      }
+    }
+  },
+  "sources": {
+    "contracts/Atomic.sol": {
+      "ast": {
+        "absolutePath": "contracts/Atomic.sol",
+        "exportedSymbols": {
+          "Atomic": [
+            9
+          ]
+        },
+        "id": 10,
+        "nodeType": "SourceUnit",
+        "nodes": [
+          {
+            "id": 1,
+            "literals": [
+              "solidity",
+              "0.5",
+              ".15"
+            ],
+            "nodeType": "PragmaDirective",
+            "src": "0:23:0"
+          },
+          {
+            "baseContracts": [],
+            "contractDependencies": [],
+            "contractKind": "contract",
+            "documentation": null,
+            "fullyImplemented": true,
+            "id": 9,
+            "linearizedBaseContracts": [
+              9
+            ],
+            "name": "Atomic",
+            "nodeType": "ContractDefinition",
+            "nodes": [
+              {
+                "body": {
+                  "id": 7,
+                  "nodeType": "Block",
+                  "src": "443:708:0",
+                  "statements": [
+                    {
+                      "externalReferences": [
+                        {
+                          "transactions": {
+                            "declaration": 3,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "497:12:0",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "transactions": {
+                            "declaration": 3,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "613:12:0",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "transactions": {
+                            "declaration": 3,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "670:12:0",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "transactions": {
+                            "declaration": 3,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "743:12:0",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "transactions": {
+                            "declaration": 3,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "804:12:0",
+                            "valueSize": 1
+                          }
+                        }
+                      ],
+                      "id": 6,
+                      "nodeType": "InlineAssembly",
+                      "operations": "{\n    let length := mload(transactions)\n    let i := 0x20\n    for { } lt(i, length) { }\n    {\n        let to := mload(add(transactions, i))\n        let value := mload(add(transactions, add(i, 0x20)))\n        let dataLength := mload(add(transactions, add(i, 0x60)))\n        let data := add(transactions, add(i, 0x80))\n        let success := call(210000000000000, to, value, data, dataLength, 0, 0)\n        if eq(success, 0)\n        {\n            revert(0, \"One of the transactions failed\")\n        }\n        i := add(i, add(0x80, mul(div(add(dataLength, 0x1f), 0x20), 0x20)))\n    }\n}",
+                      "src": "454:655:0"
+                    }
+                  ]
+                },
+                "documentation": "@dev Sends multiple transactions and reverts all if one fails, self destructs immediately\n @param transactions Encoded transactions. Each transaction is encoded as a\n                     tuple(address,uint256,bytes). The bytes\n                     of all encoded transactions are concatenated to form the input.",
+                "id": 8,
+                "implemented": true,
+                "kind": "constructor",
+                "modifiers": [],
+                "name": "",
+                "nodeType": "FunctionDefinition",
+                "parameters": {
+                  "id": 4,
+                  "nodeType": "ParameterList",
+                  "parameters": [
+                    {
+                      "constant": false,
+                      "id": 3,
+                      "name": "transactions",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 8,
+                      "src": "401:25:0",
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes_memory_ptr",
+                        "typeString": "bytes"
+                      },
+                      "typeName": {
+                        "id": 2,
+                        "name": "bytes",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "401:5:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes_storage_ptr",
+                          "typeString": "bytes"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "src": "400:27:0"
+                },
+                "returnParameters": {
+                  "id": 5,
+                  "nodeType": "ParameterList",
+                  "parameters": [],
+                  "src": "443:0:0"
+                },
+                "scope": 9,
+                "src": "389:762:0",
+                "stateMutability": "payable",
+                "superFunction": null,
+                "visibility": "public"
+              }
+            ],
+            "scope": 10,
+            "src": "25:1128:0"
+          }
+        ],
+        "src": "0:1153:0"
+      },
+      "id": 0
+    }
+  }
+}
