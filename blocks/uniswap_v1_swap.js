@@ -1,4 +1,4 @@
-Blockly.Blocks["uniswap_swap"] = {
+Blockly.Blocks["uniswap_v1_swap"] = {
   /**
    * @this Blockly.Block
    */
@@ -40,7 +40,7 @@ Blockly.Blocks["uniswap_swap"] = {
   },
   template: function () {
     return "" +
-      '<block type="uniswap_swap" id="extension_uniswap_swap">' +
+      '<block type="uniswap_v1_swap" id="uniswap_v1_swap">' +
       '<value name="VALUE">' +
       '<shadow type="math_number">' +
       '<field name="NUM">10</field>' +
