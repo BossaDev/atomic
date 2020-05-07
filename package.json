@@ -26,6 +26,7 @@
     "testBlocks": "ganache-cli -d -f https://cloudflare-eth.com@$BLOCK"
   },
   "dependencies": {
+    "@studydefi/money-legos": "^2.1.0",
     "ethers": "^4.0.47",
     "exports-loader": "0.6.3",
     "imports-loader": "0.6.5"
