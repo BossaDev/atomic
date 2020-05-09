@@ -36,6 +36,7 @@ let encoder = function (value, unit, to) {
 
 describe("ETH Transfer", function () {
     it("Should transfer ether", async function () {
+        this.timeout(50000);
 
         let txs = [
             ["1", "ether", "0x12C4914c27B8A9A038E16104d06e8679c4eD8Dc6"],
@@ -53,14 +54,14 @@ describe("ETH Transfer", function () {
         }
 
         // atomic launch with payload
-        let contract = await factory.deploy(payload, {
+        let atomicContract = await factory.deploy(payload, {
             value: ethers.utils.parseUnits("2", "ether").toHexString(),
             gasPrice: 1,
             gasLimit: 6721975
         });
 
-        // console.log("Depdloyed at", contract.address);
-        // console.log("Tx Hash", contract.deployTransaction.hash);
+        // console.log("Depdloyed at", atomicContract.address);
+        // console.log("Tx Hash", atomicContract.deployTransaction.hash);
 
         for (i = 0; i < 3; i++) {
             currentBalance = await provider.getBalance(txs[i][2])

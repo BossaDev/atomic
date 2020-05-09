@@ -31,12 +31,49 @@ Blockly.Blocks["uniswap_v1_swap"] = {
       extensions: ["colours_more", "shape_statement", "scratch_extension"],
     });
   },
-  encoder: function () {
+  encoder: async function (value, tokenFrom, tokenTo) {
+    if (tokenFrom == tokenTo) {
+      console.log("Error (uniswap_v1_swap): Cannot swap for the same token, please use different tokens from/to.")
+      return
+    }
+
+    // uniswap factory (to find out exchanges for tokens)
+    let uniswapTestFactory = new ethers.Contract(legos.uniswap.factory.address, legos.uniswap.factory.abi, signer);
+
+    // gets 
+    let getExchange = async (tokenAddress) => {
+      let exchangeAddress = await uniswapTestFactory.getExchange(tokenAddress)
+      return exchangeAddress
+    }
+
+    let uniswapExchangeInterface = new ethers.utils.Interface(legos.uniswap.exchange.abi);
+    let erc20Interface = new ethers.utils.Interface(legos.erc20.abi)
+
     // encoding for atomic
     let encoder = new ethers.utils.AbiCoder();
     let types = ["address", "uint256", "bytes"]; // to, value, data
 
-    return encoder.encode(types, ["0x0", 0, "0x0"]);
+    let exchange = (tokenFrom == "0x0") ? await getExchange(tokenTo) : await getExchange(tokenFrom)
+
+    if (tokenFrom == "0x0") { // from ether to token
+
+      let calldata = uniswapExchangeInterface.functions.ethToTokenSwapInput.encode(["2", Math.floor(Date.now() / 1000) + 300])
+      return encoder.encode(types, [exchange, ethers.utils.parseEther(value), calldata]).slice(2)
+
+    } else {
+
+      let aproveCalldata = erc20Interface.functions.approve.encode([exchange, ethers.utils.parseEther(value)])
+      let swapCalldata
+
+      if (tokenTo == "0x0") { // from token to ether
+        swapCalldata = uniswapExchangeInterface.functions.tokenToEthSwapInput.encode([ethers.utils.parseEther(value), "1", Math.floor(Date.now() / 1000) + 300])
+      } else { // token to token
+        swapCalldata = uniswapExchangeInterface.functions.tokenToTokenSwapInput.encode([ethers.utils.parseEther(value), "1", "1", Math.floor(Date.now() / 1000) + 300, tokenTo])
+      }
+
+      return encoder.encode(types, [tokenFrom, "0", aproveCalldata]).slice(2) + encoder.encode(types, [exchange, "0", swapCalldata]).slice(2)
+
+    }
   },
   template: function () {
     return "" +
