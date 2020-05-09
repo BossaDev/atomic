@@ -34,14 +34,15 @@ Blockly.Blocks["erc20_transfer"] = {
     });
   },
 
-  encoder: function (value, token, to) {
-    // data =
+  encoder: function (value, tokenAddress, to) {
+    let erc20Interface = new ethers.utils.Interface(legos.erc20.abi)
+    let calldata = erc20Interface.functions.transfer.encode([to, ethers.utils.parseEther(value)])
 
     // encoding for atomic
     let encoder = new ethers.utils.AbiCoder();
     let types = ["address", "uint256", "bytes"]; // to, value, data
 
-    return encoder.encode(types, [token, 0, data]);
+    return encoder.encode(types, [tokenAddress, "0", calldata]).slice(2);
   },
   template: function () {
     return "" +

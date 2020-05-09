@@ -38,7 +38,7 @@ Blockly.Blocks["uniswap_v1_swap"] = {
     }
 
     // uniswap factory (to find out exchanges for tokens)
-    let uniswapTestFactory = new ethers.Contract(legos.uniswap.factory.address, legos.uniswap.factory.abi, signer);
+    let uniswapTestFactory = new ethers.Contract(legos.uniswap.factory.address, legos.uniswap.factory.abi, new ethers.getDefaultProvider());
 
     // gets 
     let getExchange = async (tokenAddress) => {
