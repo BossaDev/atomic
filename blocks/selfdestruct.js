@@ -8,7 +8,7 @@ Blockly.Blocks["selfdestruct"] = {
       message0: "%1 %2 selfdestruct",
       args0: [{
           type: "field_image",
-          src: "https://lh5.googleusercontent.com/proxy/yafLjy7SuQiyUFAqjRDsCjTURzT1Sh134FlcuTJYoLgSr6kt1fNRRnkTPOpKQKKsHTUH2rpCfENm7WvXwJNPUvLhS5lECvqjy6GBPcEJJjT1HAIWkYwXdya50k3DUBDvkFy-",
+          src: "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/skull-and-crossbones_2620.png",
           width: 30,
           height: 30,
         },
