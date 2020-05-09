@@ -18,7 +18,7 @@ const startChain = async () => {
     const ganache = Ganache.provider({
         fork: MAINNET_NODE_URL,
         network_id: 1,
-        fork_block_number: (await getLatestBlock()) - 5, // forking 10 blocks behind to avoid bumping into sync differences
+        fork_block_number: (await getLatestBlock()) - 10, // forking 10 blocks behind to avoid bumping into sync differences
     })
 
     const provider = new ethers.providers.Web3Provider(ganache)
@@ -59,7 +59,7 @@ const deployAtomic = async (payload, signer, value = "0") => {
         gasPrice: 1,
         gasLimit: 6721975
     });
-    return atomicContract.address
+    return atomicContract
 }
 
 module.exports = {

@@ -1,10 +1,8 @@
 const {
-    expect,
     assert
 } = require("chai");
 
 const ethers = require("ethers");
-const Ganache = require("ganache-core")
 
 const {
     startChain,
