@@ -37,17 +37,132 @@ Blockly.Blocks["uniswap_v1_swap"] = {
       return
     }
 
+    let uniswapFactoryAbi = [{
+      "name": "getExchange",
+      "outputs": [{
+        "type": "address",
+        "name": "out"
+      }],
+      "inputs": [{
+        "type": "address",
+        "name": "token"
+      }],
+      "constant": true,
+      "payable": false,
+      "type": "function",
+      "gas": 715
+    }]
+
     // uniswap factory (to find out exchanges for tokens)
-    let uniswapTestFactory = new ethers.Contract(legos.uniswap.factory.address, legos.uniswap.factory.abi, new ethers.getDefaultProvider());
+    let uniswapFactory = new ethers.Contract("0xc0a47dFe034B400B47bDaD5FecDa2621de6c4d95", uniswapFactoryAbi, new ethers.getDefaultProvider());
 
     // gets 
     let getExchange = async (tokenAddress) => {
-      let exchangeAddress = await uniswapTestFactory.getExchange(tokenAddress)
+      let exchangeAddress = await uniswapFactory.getExchange(tokenAddress)
       return exchangeAddress
     }
 
-    let uniswapExchangeInterface = new ethers.utils.Interface(legos.uniswap.exchange.abi);
-    let erc20Interface = new ethers.utils.Interface(legos.erc20.abi)
+    let uniswapExchangeAbi = [{
+      "name": "ethToTokenSwapInput",
+      "outputs": [{
+        "type": "uint256",
+        "name": "out"
+      }],
+      "inputs": [{
+          "type": "uint256",
+          "name": "min_tokens"
+        },
+        {
+          "type": "uint256",
+          "name": "deadline"
+        }
+      ],
+      "constant": false,
+      "payable": true,
+      "type": "function",
+      "gas": 12757
+    }, {
+      "name": "tokenToEthSwapInput",
+      "outputs": [{
+        "type": "uint256",
+        "name": "out"
+      }],
+      "inputs": [{
+          "type": "uint256",
+          "name": "tokens_sold"
+        },
+        {
+          "type": "uint256",
+          "name": "min_eth"
+        },
+        {
+          "type": "uint256",
+          "name": "deadline"
+        }
+      ],
+      "constant": false,
+      "payable": false,
+      "type": "function",
+      "gas": 47503
+    }, {
+      "name": "tokenToTokenSwapInput",
+      "outputs": [{
+        "type": "uint256",
+        "name": "out"
+      }],
+      "inputs": [{
+          "type": "uint256",
+          "name": "tokens_sold"
+        },
+        {
+          "type": "uint256",
+          "name": "min_tokens_bought"
+        },
+        {
+          "type": "uint256",
+          "name": "min_eth_bought"
+        },
+        {
+          "type": "uint256",
+          "name": "deadline"
+        },
+        {
+          "type": "address",
+          "name": "token_addr"
+        }
+      ],
+      "constant": false,
+      "payable": false,
+      "type": "function",
+      "gas": 51007
+    }]
+
+    let ERC20approveAbi = [{
+      "constant": false,
+      "inputs": [{
+          "internalType": "address",
+          "name": "usr",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "wad",
+          "type": "uint256"
+        }
+      ],
+      "name": "approve",
+      "outputs": [{
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }]
+
+    let uniswapExchangeInterface = new ethers.utils.Interface(uniswapExchangeAbi);
+    let erc20Interface = new ethers.utils.Interface(ERC20approveAbi)
 
     // encoding for atomic
     let encoder = new ethers.utils.AbiCoder();
@@ -55,9 +170,11 @@ Blockly.Blocks["uniswap_v1_swap"] = {
 
     let exchange = (tokenFrom == "0x0") ? await getExchange(tokenTo) : await getExchange(tokenFrom)
 
+    let deadline = Math.floor(Date.now() / 1000) + 300 // 5mins
+
     if (tokenFrom == "0x0") { // from ether to token
 
-      let calldata = uniswapExchangeInterface.functions.ethToTokenSwapInput.encode(["2", Math.floor(Date.now() / 1000) + 300])
+      let calldata = uniswapExchangeInterface.functions.ethToTokenSwapInput.encode(["2", deadline])
       return encoder.encode(types, [exchange, ethers.utils.parseEther(value), calldata]).slice(2)
 
     } else {
@@ -66,9 +183,9 @@ Blockly.Blocks["uniswap_v1_swap"] = {
       let swapCalldata
 
       if (tokenTo == "0x0") { // from token to ether
-        swapCalldata = uniswapExchangeInterface.functions.tokenToEthSwapInput.encode([ethers.utils.parseEther(value), "1", Math.floor(Date.now() / 1000) + 300])
+        swapCalldata = uniswapExchangeInterface.functions.tokenToEthSwapInput.encode([ethers.utils.parseEther(value), "1", deadline])
       } else { // token to token
-        swapCalldata = uniswapExchangeInterface.functions.tokenToTokenSwapInput.encode([ethers.utils.parseEther(value), "1", "1", Math.floor(Date.now() / 1000) + 300, tokenTo])
+        swapCalldata = uniswapExchangeInterface.functions.tokenToTokenSwapInput.encode([ethers.utils.parseEther(value), "1", "1", deadline, tokenTo])
       }
 
       return encoder.encode(types, [tokenFrom, "0", aproveCalldata]).slice(2) + encoder.encode(types, [exchange, "0", swapCalldata]).slice(2)

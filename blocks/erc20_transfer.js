@@ -35,7 +35,31 @@ Blockly.Blocks["erc20_transfer"] = {
   },
 
   encoder: function (value, tokenAddress, to) {
-    let erc20Interface = new ethers.utils.Interface(legos.erc20.abi)
+    let erc20TransferAbi = [{
+      "constant": false,
+      "inputs": [{
+          "internalType": "address",
+          "name": "dst",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "wad",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer",
+      "outputs": [{
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+    let erc20Interface = new ethers.utils.Interface(erc20TransferAbi)
     let calldata = erc20Interface.functions.transfer.encode([to, ethers.utils.parseEther(value)])
 
     // encoding for atomic
