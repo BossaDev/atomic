@@ -54,8 +54,8 @@ const launchAtomic = async (blocks) => {
 const launchFromBlock = async (block) => {
     if (!isInitialBlock(block.attributes.type.value)) return
 
-    let gas = (block.FIELD) ? getNestedValue(block.FIELD[0]) : "M" // H/M/L, will use ethgasstation recommended values + 1 wei
-    let value = (block.VALUE) ? getNestedValue(block.VALUE[0]) : "0" // H/M/L, will use ethgasstation recommended values + 1 wei
+    let gas = (block.FIELD) ? await getNestedValue(block.FIELD[0]) : "M" // H/M/L, will use ethgasstation recommended values + 1 wei
+    let value = (block.VALUE) ? await getNestedValue(block.VALUE[0]) : "0" // H/M/L, will use ethgasstation recommended values + 1 wei
     let calldata = "0x"
 
     calldata += await encodePayload(block.NEXT)
@@ -68,11 +68,16 @@ const launchFromBlock = async (block) => {
 }
 
 // function to recursively get deeply nested values in Blocks
-const getNestedValue = (value) => {
+const getNestedValue = async (value) => {
     if (value.value) return value.value
-    else if (value.FIELD) return getNestedValue(value.FIELD[0])
-    else if (value.VALUE) return getNestedValue(value.VALUE[0])
-    else if (value.SHADOW) return getNestedValue(value.SHADOW[0])
+    else if (value.attributes.type && value.attributes.type.value == "ens_resolver") {
+        let provider = ethers.getDefaultProvider("homestead")
+        let address = await provider.resolveName(getNestedValue(value.VALUE[0])) //.then(console.log);
+        return address
+    }
+    else if (value.FIELD) return await getNestedValue(value.FIELD[0])
+    else if (value.VALUE) return await getNestedValue(value.VALUE[0])
+    else if (value.SHADOW) return await getNestedValue(value.SHADOW[0])
 }
 
 
@@ -83,10 +88,12 @@ const encodePayload = async (block) => {
     let values = []
     let blockData = block[0].BLOCK[0]
 
-    if (blockData.VALUE)
-        blockData.VALUE.forEach(value => {
-            values.push(getNestedValue(value))
-        });
+    if (blockData.VALUE) {
+        for (i = 0; i< blockData.VALUE.length; i++) {
+            let value = await getNestedValue(blockData.VALUE[i])
+            values.push(value)
+        }
+    }
 
     if (blockData.STATEMENT) {
         let statement = await encodePayload(blockData.STATEMENT)

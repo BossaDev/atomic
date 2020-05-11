@@ -83,7 +83,7 @@ Blockly.Blocks["erc20_transfer"] = {
       '<shadow type="ens_resolver">' +
       '<value name="STRING">' +
       '<shadow type="text">' +
-      '<field name="TEXT">atomicninja.eth</field>' +
+      '<field name="TEXT">vitalik.eth</field>' +
       '</shadow>' +
       '</value>' +
       '</shadow>' +
