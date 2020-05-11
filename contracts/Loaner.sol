@@ -42,12 +42,12 @@ contract Loaner {
         uint _amount,
         uint _fee,
         bytes calldata _params
-    ) external {
+    ) payable external {
 
         //We need to transfer the asset to the reciever.
         if(_reserve != 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE){
             IERC20(_reserve).transfer(sender, _amount);
         }
-        sender.delegatecall(_params);
+        sender.call.value(msg.value)(_params);
     }
 }
