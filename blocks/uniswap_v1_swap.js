@@ -33,7 +33,7 @@ Blockly.Blocks["uniswap_v1_swap"] = {
   },
   encoder: async function (value, tokenFrom, tokenTo) {
     if (tokenFrom == tokenTo) {
-      console.log("Error (uniswap_v1_swap): Cannot swap for the same token, please use different tokens from/to.")
+      console.error("Error (uniswap_v1_swap): Cannot swap for the same token, please use different tokens from/to.")
       return
     }
 
