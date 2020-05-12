@@ -34,14 +34,39 @@ Blockly.Blocks["erc20_transfer"] = {
     });
   },
 
-  encoder: function (value, token, to) {
-    // data =
+  encoder: function (value, tokenAddress, to) {
+    let erc20TransferAbi = [{
+      "constant": false,
+      "inputs": [{
+          "internalType": "address",
+          "name": "dst",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "wad",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer",
+      "outputs": [{
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+    let erc20Interface = new ethers.utils.Interface(erc20TransferAbi)
+    let calldata = erc20Interface.functions.transfer.encode([to, ethers.utils.parseEther(value)])
 
     // encoding for atomic
     let encoder = new ethers.utils.AbiCoder();
     let types = ["address", "uint256", "bytes"]; // to, value, data
 
-    return encoder.encode(types, [token, 0, data]);
+    return encoder.encode(types, [tokenAddress, "0", calldata]).slice(2);
   },
   template: function () {
     return "" +
@@ -58,7 +83,7 @@ Blockly.Blocks["erc20_transfer"] = {
       '<shadow type="ens_resolver">' +
       '<value name="STRING">' +
       '<shadow type="text">' +
-      '<field name="TEXT">atomicninja.eth</field>' +
+      '<field name="TEXT">vitalik.eth</field>' +
       '</shadow>' +
       '</value>' +
       '</shadow>' +

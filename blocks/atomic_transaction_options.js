@@ -8,7 +8,7 @@ Blockly.Blocks["atomic_transaction_options"] = {
       message0: "%1 %2 transaction %3gas, %4ETH",
       args0: [{
           type: "field_image",
-          src: "https://d29fhpw069ctt2.cloudfront.net/icon/image/81267/preview5.svg",
+          src: "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojidex/112/atom-symbol_269b.png",
           width: 40,
           height: 40,
         },
