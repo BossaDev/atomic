@@ -2,14 +2,19 @@ const { expect } = require("chai");
 
 const { legos } = require("@studydefi/money-legos");
 
-// var ethers = require("ethers");
+const {
+  startChain,
+  deployAtomic,
+  swapEthForDai,
+  encodeForAtomic,
+} = require("./testHelpers");
 
-const ganacheUrl = "http://127.0.0.1:8545";
-let provider = new ethers.providers.JsonRpcProvider(ganacheUrl);
-// ganache-cli -d -f https://cloudflare-eth.com
+// const ganacheUrl = "http://127.0.0.1:8545";
+// let provider = new ethers.providers.JsonRpcProvider(ganacheUrl);
+// // ganache-cli -d -f https://cloudflare-eth.com
 
-const signer = provider.getSigner(0);
-const signer1 = provider.getSigner(1);
+// const signer = provider.getSigner(0);
+// const signer1 = provider.getSigner(1);
 
 const encoder = (token, value, loanerAdd, substack) => {
   // Hardcoded Values
@@ -22,20 +27,14 @@ const encoder = (token, value, loanerAdd, substack) => {
     loanerAdd = "0xdeployedContract";
   }
 
-  let encoder = new ethers.utils.AbiCoder();
-  let types = ["address", "uint256", "bytes"]; // to, value, data
+  let encSubstack = substack; // Result from econded substack
+
+  //Encode call to return funds
   let erc20Interface = new ethers.utils.Interface(legos.erc20.abi);
   let amount = value * 1.0009;
-
   let poolReturn;
   if (token == eth_token) {
-    poolReturn = encoder
-      .encode(types, [
-        aave_liquidityPool,
-        ethers.utils.parseUnits(amount, "wei").toString(),
-        "0x0",
-      ])
-      .slice(2);
+    poolReturn = encodeForAtomic(aave_liquidityPool, amount, "0x0");
   } else {
     poolReturn = erc20Interface.functions.transfer.encode([
       aave_liquidityPool,
@@ -43,20 +42,36 @@ const encoder = (token, value, loanerAdd, substack) => {
     ]);
   }
 
-  let data = substack; // Result from econded substack
-
-  let loanerCall = loaner.interface.functions.initateFlashLoan.encode([
+  // Encode call to Loaner Contract
+  let loanerData = loaner.interface.functions.initateFlashLoan.encode([
     token,
     value,
-    data,
+    encSubstack + poolReturn,
   ]);
+
+  return encodeForAtomic(loanerAdd, "0", loanerData);
 };
 
-describe("Sandwiches", function () {
-  it("Should perform flashloans correctly", async function () {
-    const LoanerFactory = await ethers.getContractFactory("Loaner");
-    let loaner = await LoanerFactory.deploy();
+describe("Aave Flash Loans", function () {
+  let loanerContract = {};
+  const eth_token = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
-    encoder("0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE", "100000000", "0x0");
+  beforeEach(async () => {
+    this.timeout(100000);
+
+    const provider = await startChain();
+    const signer = await provider.getSigner(0);
+
+    const LoanerFactory = await ethers.getContractFactory("Loaner");
+    loanerContract = await LoanerFactory.deploy();
+  });
+
+  it("Should perform flashloans correctly", async function () {
+    let payload = "0x";
+    payload += encoder(
+      eth_token,
+      ethers.utils.parseEther("50"),
+      loanerContract
+    );
   });
 });
