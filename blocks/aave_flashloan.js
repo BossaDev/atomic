@@ -14,7 +14,7 @@ Blockly.Blocks["aave_flashloan"] = {
       lastDummyAlign2: "RIGHT",
       args0: [{
           type: "field_image",
-          src: "./media/aaveGhost.svg",
+          src: "./media/aaveghost.svg",
           width: 40,
           height: 30,
         },

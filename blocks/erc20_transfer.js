@@ -29,8 +29,8 @@ Blockly.Blocks["erc20_transfer"] = {
         },
       ],
       category: Blockly.Categories.more,
-      colour: 359,
-      extensions: ["shape_statement"]
+      colour: "#0000FF",
+      extensions: ["shape_statement", "scratch_extension"]
     });
   },
 
