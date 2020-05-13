@@ -22,10 +22,12 @@ Blockly.Blocks["selfdestruct"] = {
   },
   encoder: function () {
     // encoding for atomic
-    let encoder = new ethers.utils.AbiCoder();
-    let types = ["address", "uint256", "bytes"]; // to, value, data
+    // let encoder = new ethers.utils.AbiCoder();
+    // let types = ["address", "uint256", "bytes"]; // to, value, data
 
-    return encoder.encode(types, ["0x0", 0, "0x0"]);
+    // return encoder.encode(types, ["0x0", 0, "0x0"]);
+
+    return ""
   },
   template: function () {
     return "" +
