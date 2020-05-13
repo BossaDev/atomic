@@ -20,13 +20,6 @@ Blockly.Blocks["atomic_transaction"] = {
       extensions: ["colours_event", "shape_hat"],
     });
   },
-  encoder: function () {
-    // encoding for atomic
-    let encoder = new ethers.utils.AbiCoder();
-    let types = ["address", "uint256", "bytes"]; // to, value, data
-
-    return encoder.encode(types, ["0x0", 0, "0x0"]);
-  },
   template: function () {
     return "" +
       '<block type="atomic_transaction" id="atomic_transaction">' +
