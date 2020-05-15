@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Atomic Docs</title>
+
+    <style>
+        html,
+        body {
+          height: 100%;
+          padding-right: 5%;
+          padding-left: 5%;
+          background-color: #f9f9f9;
+          font-family: sans-serif;
+        }
+      </style>
+</head>
+<body>
+    <h1>Atomic (Ninja)</h1>
+    <p>Atomic is a transaction batcher, that will execute several actions within one <i>atomic</i> transaction.</p>
+
+    <h2>Motivation</h2>
+    <p>Some say that flashloans democratize access to large amounts of capital, but that is not entirely true, until they are useable by the average investor. Nowadays to access the feature one needs deep technical logic, and good coding skills. Atomic will put this and other great tools in the hands of a lot more users.</p>
+    <p><b>todo</b> Talk about Hackathon</p>
+
+    <h2>Tech Stack</h2>
+    <p>The idea started with just one smart contract, a simplified version of the multisend contract by (...) which basically slashes the ability to delegatecall for the sake of simplicity and to be able to fit maybe one more transaction in the calldata.</p>
+    <p>Then we stumbled on the Scratch Blocks library, itself based on the Google Blockly library, and thought it´d be a perfect fit (while also saving us from hours of UI research).</p>
+    <p><b>todo</b> Final stack: smart contracts, IPFS, cludflare, extensibility</p>
+
+    <h2>Quick Start</h2>
+    <p>On the left of the screen there is a list of sorted, disconnected blocks. This is your <b>toolbox</b>.</p>
+    <p>Drag the blocks to the <b>workspace</b> at the right, and join them to perform the actions you´d like.</p>
+    <p>Start with a hat shaped block such as <img src='./media/hatblock.png' style='width: 5%;'>, as they indicate the beginning of your transaction.</p>
+    <p>Once you are done, press <img src='./media/zoom-simulateAtomic.svg'> to simulate your transaction, and <img src='./media/zoom-launchAtomic.svg'> to send it out!</p>
+    <p><b>Tip:</b> Hover the blocks for details on how they work.</p>
+
+    <h2>Blocks</h2>
+    <h3>Hat block</h3>
+    <img src='./media/hatblock.png' style='width: 20%;'>
+    <p>...</p>
+    <h3>Sandwitch block</h3>
+    <img src='./media/sandwitchblock.png' style='width: 35%;'>
+    <p>...</p>
+    <h3>Linear Block</h3>
+    <img src='./media/linearblock.png' style='width: 40%;'>
+    <p>...</p>
+
+    <h2>Actions</h2>
+    <h3><img src='./media/zoom-simulateAtomic.svg'> Simulate</h3>
+    <p>...</p>
+    <h3><img src='./media/zoom-launchAtomic.svg'> Launch Atomic Tx</h3>
+    <p>...</p>
+
+    <br><br>
+
+
+</body>

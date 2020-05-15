@@ -28,6 +28,7 @@
   <script src="./js/launchAtomic.js"></script>
   <script src="./js/simulateAtomic.js"></script>
   <script type="text/javascript" src="./js/lib/xmlToJSON.min.js"></script>
+  <script type="text/javascript" src="./js/lib/picoModal-3.0.0.min.js"></script>
 
   <script>
     'use strict';
@@ -62,6 +63,18 @@
           dragShadowOpacity: 0.6
         }
       });
+
+      picoModal(
+        "<h2>Welcome to Atomic (Ninja)!</h2>" +
+        "<p>Send complex atomic transactions to Ethereum like never before.</p>" +
+        "<h3>Quick Start</h3>" +
+        "<p>On the left of the screen there is a list of sorted, disconnected blocks. This is your <b>toolbox</b>.</p>" +
+        "<p>Drag the blocks to the <b>workspace</b> at the right, join them and edit their parameters to perform the actions you´d like.</p>" +
+        "<p>Start with a hat shaped block such as <img src='./media/hatblock.png' style='width: 11%;'>, as they indicate the beginning of your transaction.</p>" +
+        "<p>Once you are done, press <img src='./media/zoom-simulateAtomic.svg'> to simulate your transaction, and <img src='./media/zoom-launchAtomic.svg'> to send it out!</p>" +
+        "<p><b>Tip:</b> Hover the blocks for details on how they work.</p>" +
+        "<p>For more details, head over to the <a href='./docs.html'>Atomic documentation</a>.</p>"
+      ).show();
     }
 
     function getToolboxElement() {
@@ -74,9 +87,6 @@
     html,
     body {
       height: 100%;
-    }
-
-    body {
       background-color: #fff;
       font-family: sans-serif;
       overflow: hidden;
@@ -86,24 +96,6 @@
       float: right;
       height: 100%;
       width: 100%;
-    }
-
-    #collaborators {
-      float: right;
-      width: 30px;
-      margin-left: 10px;
-    }
-
-    #collaborators>img {
-      margin-right: 5px;
-      height: 30px;
-      padding-bottom: 5px;
-      width: 30px;
-      border-radius: 3px;
-    }
-
-    #importExport {
-      font-family: monospace;
     }
   </style>
 </head>
