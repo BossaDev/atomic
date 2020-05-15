@@ -78,7 +78,7 @@ Blockly.Blocks["eth-unit-list"] = {
         options: [
           ["WEI", "WEI"],
           ["GWEI", "GWEI"],
-          ["ETH", "ETH"],
+          ["ETH", "ETHER"],
         ],
       }, ],
       extensions: ["colours_control", "output_string"],
