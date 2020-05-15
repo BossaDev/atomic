@@ -70,9 +70,9 @@ const launchAtomic = async (blocks) => {
     let txParameters = await getTxParameters(launchBlock)
 
     console.log("Sending atomic tx:", ...txParameters)
+
     // send atomic tx
     sendAtomicTx(...txParameters)
-
 }
 
 // launches from a specific block, all validation should be performed before
@@ -85,9 +85,13 @@ const getTxParameters = async (block) => {
     let value = (block.VALUE) ? await getNestedValue(block.VALUE[0]) : "0"
     let calldata = "0x"
 
-    calldata += await encodePayload(block.NEXT)
-
-    return [value, gas, calldata]
+    try {
+        calldata += await encodePayload(block.NEXT)
+        return [value, gas, calldata]
+    } catch (error) {
+        alert("\nError encoding for transaction: \n\n" + error.message)
+        throw TypeError(error.message)
+    }
 }
 
 // function to recursively get deeply nested values in Blocks
@@ -97,7 +101,7 @@ const getNestedValue = async (value) => {
         let ensDomain = await getNestedValue(value.VALUE[0])
         let provider = ethers.getDefaultProvider("homestead")
         let address = await provider.resolveName(ensDomain)
-        if (!address) console.error("Error: Unable to resolve", ensDomain, "on ENS.")
+        if (!address) throw TypeError("Error: Unable to resolve '" + ensDomain + "' on ENS.")
         return address
     } else if (value.FIELD) return await getNestedValue(value.FIELD[0])
     else if (value.VALUE) return await getNestedValue(value.VALUE[0])
@@ -132,18 +136,22 @@ const encodePayload = async (block) => {
 }
 
 const sendAtomicTx = async function (value, gas, calldata) {
-    await ethereum.enable()
-    const provider = new ethers.providers.Web3Provider(web3.currentProvider);
+    try {
+        await ethereum.enable()
+        const provider = new ethers.providers.Web3Provider(web3.currentProvider);
 
-    // There is only ever up to one account in MetaMask exposed
-    const signer = provider.getSigner();
-    let factory = new ethers.ContractFactory(atomicAbi, atomicBytecode, signer);
+        // There is only ever up to one account in MetaMask exposed
+        const signer = provider.getSigner();
+        let factory = new ethers.ContractFactory(atomicAbi, atomicBytecode, signer);
 
-    let contract = await factory.deploy(calldata, {
-        value: ethers.utils.parseEther(value).toHexString(),
-        gasPrice: 10, // todo: dynamic gas price
-        gasLimit: 10000000
-    });
+        let contract = await factory.deploy(calldata, {
+            value: ethers.utils.parseEther(value).toHexString(),
+            gasPrice: 10, // todo: dynamic gas price
+            gasLimit: 10000000
+        });
 
-    console.log("Deployed at", contract.address);
+        console.log("Deployed at", contract.address);
+    } catch (error) {
+        alert("\nError sending transaction: \n\n" + error.message + "\n\nEnsure you are using an Ethereum compatible browser, and approve theh request to connect.")
+    }
 }
