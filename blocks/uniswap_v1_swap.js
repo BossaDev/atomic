@@ -32,10 +32,9 @@ Blockly.Blocks["uniswap_v1_swap"] = {
     });
   },
   encoder: async function (value, tokenFrom, tokenTo) {
-    if (tokenFrom == tokenTo) {
-      console.error("Error (uniswap_v1_swap): Cannot swap for the same token, please use different tokens from/to.")
-      return
-    }
+    if (tokenFrom == tokenTo)
+      throw TypeError("Error (uniswap_v1_swap): Cannot swap for the same token, please use different tokens from/to.")
+    
 
     let uniswapFactoryAbi = [{
       "name": "getExchange",
