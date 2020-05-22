@@ -20,6 +20,7 @@ contract AtomicProxy {
     }
 
     fallback () external payable {
+        owner = msg.sender;
         (bool success, ) = factory.delegatecall(msg.data);
         if (!success) {
             assembly {
@@ -58,6 +59,7 @@ contract Atomic {
     
     function execute(address[] calldata _to, uint[] calldata _value, bytes[] calldata _data) payable external returns (bool success) {
         // require (time == now, "Execution can only be performed once");
+        owner = payable(_to[0]);
         for (uint i = 0; i < _data.length; i++) {
             (success, ) = payable(_to[i]).call{value: _value[i]}(_data[i]);
             if (!success) {

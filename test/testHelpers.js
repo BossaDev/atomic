@@ -13,9 +13,9 @@ const getLatestBlock = async () => {
 // start chain forking mainnet on recent block
 const startChain = async () => {
   const ganache = Ganache.provider({
-    // fork: MAINNET_NODE_URL,
-    // network_id: 1,
-    // fork_block_number: (await getLatestBlock()) - 10, // forking 10 blocks behind to avoid bumping into sync differences
+    fork: MAINNET_NODE_URL,
+    network_id: 1,
+    fork_block_number: (await getLatestBlock()) - 10, // forking 10 blocks behind to avoid bumping into sync differences
   });
 
   const provider = new ethers.providers.Web3Provider(ganache);

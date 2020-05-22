@@ -60,7 +60,6 @@ const loanerABI = [
     type: "function",
   },
 ];
-
 const encoder = (token, value, substack, loanerAdd) => {
   const aave_core = "0x3dfd23A6c5E8BbcFc9581d2E864a68feb6a076d3";
   const eth_token = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
@@ -72,6 +71,7 @@ const encoder = (token, value, substack, loanerAdd) => {
   //Encode call to return funds
   let erc20Interface = new ethers.utils.Interface(legos.erc20.abi);
   let fee = value.mul(ethers.utils.bigNumberify("9")).div("10000");
+
   if (token == eth_token) {
     substack.adds.push(aave_core);
     substack.weiValues.push(value.add(fee));
@@ -94,7 +94,7 @@ const encoder = (token, value, substack, loanerAdd) => {
 
   let loanerInterface = new ethers.utils.Interface(loanerABI);
   // Encode call to Loaner Contract
-  let loanerData = loanerInterface.functions.initateFlash.encode([
+  let loanerData = loanerInterface.functions.initateFlashLoan.encode([
     token,
     value,
     "0x" + poolReturn,
@@ -129,41 +129,30 @@ describe("Aave Flash Loans", function () {
     aave = await AaveFac.deploy({
       value: ethers.utils.parseEther("20").toHexString(),
     });
-    console.log("Aave add", aave.address);
+    // console.log("Aave add", aave.address);
   });
 
   it("Should perform flashloans correctly", async function () {
     this.timeout(500000);
     let payload = "0x";
-
-    console.log("Atomic Factory", atomicFactory.address);
+    let amount = ethers.utils.parseEther("123");
+    // console.log("Atomic Factory", atomicFactory.address);
 
     //encode call to factory
-    let txs = encoder(
-      aave.address,
-      ethers.utils.parseEther("10"),
-      substack,
-      loanerContract.address
-    );
+    let txs = encoder(eth_token, amount, substack, loanerContract.address);
 
-    console.log(txs);
+    // console.log(txs);
+    let core = "0x3dfd23A6c5E8BbcFc9581d2E864a68feb6a076d3";
 
-    let bef = await ethers.provider.getBalance(aave.address);
-    console.log("bef", bef.toString());
+    let bef = await ethers.provider.getBalance(core);
+    // console.log("bef", bef.toString());
 
-    console.log("Atomic deploying...");
-    await atomicFactory.launchAtomic(
-      [aave.address],
-      [ethers.utils.parseEther("1")],
-      ["0x0"],
-      {
-        value: ethers.utils.parseUnits("10", "ether").toHexString(),
-        gasPrice: 1,
-        gasLimit: 6500000,
-      }
-    );
-
-    // let core = "0x3dfd23A6c5E8BbcFc9581d2E864a68feb6a076d3";
+    // console.log("Atomic deploying...");
+    await atomicFactory.launchAtomic(txs.adds, txs.values, txs.datas, {
+      value: ethers.utils.parseUnits("10", "ether").toHexString(),
+      gasPrice: 1,
+      gasLimit: 6500000,
+    });
 
     // console.log("atm", atomicContract.address);
 
@@ -180,8 +169,8 @@ describe("Aave Flash Loans", function () {
     //   }
     // );
 
-    let aft = await ethers.provider.getBalance(aave.address);
-    console.log("aft", aft.toString());
+    // let aft = await ethers.provider.getBalance(core);
+    // console.log("aft", aft.toString());
 
     // await loanerContract.executeOperation(
     //   atomicContract.address,
@@ -193,12 +182,25 @@ describe("Aave Flash Loans", function () {
     //   }
     // );
 
-    let d = await loanerContract.debug();
-    console.log("dbg", d.toString());
-    let dby = await loanerContract.dby();
-    console.log("dby", dby);
-    let snd = await loanerContract.sender();
-    console.log("snd", snd);
+    let loaned = await loanerContract.debug();
+    // console.log("dbg", loaned.toString());
+    // let dby = await loanerContract.dby();
+    // console.log("dby", dby);
+    // let snd = await loanerContract.sender();
+    // console.log("snd", snd);
+
+    // let atd = await atomicFactory.factory();
+    // console.log("ato", atd);
+
+    // let proxy = new ethers.Contract(
+    //   atd,
+    //   atomicFactory.interface.abi,
+    //   ethers.provider
+    // );
+    // console.log(await proxy.owner());
+
+    // let ff = await aave._fee();
+    // console.log(ff.toString());
 
     // let bef = await ethers.provider.getBalance(aave.address);
     // console.log(bef.toString());
@@ -208,23 +210,6 @@ describe("Aave Flash Loans", function () {
     // let val2 = await atomicContract.dd();
     // console.log("dd", val2);
 
-    // assert.isTrue(false);
+    assert.isTrue(loaned.eq(amount));
   });
-
-  // it("Should encode", async () => {
-  //   let loanerAddress = "0xF7e59f232f4eF7302755176FbF8bE231BA33cA82";
-  //   let aaveAddress = "0x631373B19872701c59926dBDe01d6Ef9c2C98A7a";
-
-  //   let payload = "0x";
-  //   let enc = encoder(
-  //     aaveAddress,
-  //     ethers.utils.parseEther("1"),
-  //     substack,
-  //     loanerAddress
-  //   );
-
-  //   console.log("encoded");
-
-  //   console.log(payload + enc);
-  // });
 });
