@@ -17,7 +17,11 @@ let encoder = function (value, unit, to) {
     let encoder = new ethers.utils.AbiCoder();
     let types = ["address", "uint256", "bytes"]; // to, value, data
 
-    return { adds: [to], values: [ethers.utils.parseUnits(value, unit).toString()], datas: ["0x0"] }
+    return {
+        adds: [to],
+        values: [ethers.utils.parseUnits(value, unit).toString()],
+        datas: ["0x0"]
+    }
 }
 
 
@@ -38,7 +42,11 @@ describe("ETH Transfer", function () {
             ["300", "gwei", "0xC69E1e6E3A8296Bb1b21158bA0C6c3447F5339e5"]
         ]
 
-        txObj = { adds: [], values: [], datas: []}
+        txObj = {
+            adds: [],
+            values: [],
+            datas: []
+        }
         let previousBalances = []
 
         for (i = 0; i < txs.length; i++) {
@@ -52,14 +60,13 @@ describe("ETH Transfer", function () {
         await atomicFactory.launchAtomic(
             txObj.adds,
             txObj.values,
-            txObj.datas,
-            {
-              value: ethers.utils.parseUnits("2", "ether").toHexString(),
-              gasPrice: 1,
-              gasLimit: 6500000,
+            txObj.datas, {
+                value: ethers.utils.parseUnits("2", "ether").toHexString(),
+                gasPrice: 1,
+                gasLimit: 6500000,
             }
-          );
-        
+        );
+
 
         for (i = 0; i < txs.length; i++) {
             currentBalance = await ethers.provider.getBalance(txs[i][2])
