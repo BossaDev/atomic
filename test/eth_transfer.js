@@ -2,15 +2,13 @@ const {
     assert
 } = require("chai");
 
-var ethers = require("ethers");
-
-const ganacheUrl = "http://127.0.0.1:8545";
-let provider = new ethers.providers.JsonRpcProvider(ganacheUrl);
+// const ganacheUrl = "http://127.0.0.1:8545";
+// let provider = new ethers.providers.JsonRpcProvider(ganacheUrl);
 // ganache-cli -d -f https://cloudflare-eth.com
 
 const {
     startChain,
-    deployAtomic
+    deployAtomicFactory
 } = require("./testHelpers")
 
 // encoder from the block
@@ -19,7 +17,11 @@ let encoder = function (value, unit, to) {
     let encoder = new ethers.utils.AbiCoder();
     let types = ["address", "uint256", "bytes"]; // to, value, data
 
-    return encoder.encode(types, [to, ethers.utils.parseUnits(value, unit).toString(), "0x0"]).slice(2);
+    return {
+        adds: [to],
+        values: [ethers.utils.parseUnits(value, unit).toString()],
+        datas: ["0x0"]
+    }
 }
 
 
@@ -27,8 +29,12 @@ describe("ETH Transfer", function () {
     it("Should transfer Ether", async function () {
         this.timeout(50000);
 
-        const provider = await startChain();
-        const signer = provider.getSigner(0);
+        ethers.provider = await startChain();
+        const signer = ethers.provider.getSigner(0);
+
+        // const atomicFactory = deployAtomicFactory()
+        const AtomicFactory = await ethers.getContractFactory("Atomic");
+        atomicFactory = await AtomicFactory.deploy();
 
         let txs = [
             ["1", "ether", "0x12C4914c27B8A9A038E16104d06e8679c4eD8Dc6"],
@@ -36,20 +42,34 @@ describe("ETH Transfer", function () {
             ["300", "gwei", "0xC69E1e6E3A8296Bb1b21158bA0C6c3447F5339e5"]
         ]
 
-        let payload = "0x"
-
+        txObj = {
+            adds: [],
+            values: [],
+            datas: []
+        }
         let previousBalances = []
 
-        for (i = 0; i < 3; i++) {
-            previousBalances[i] = await provider.getBalance(txs[i][2])
-            payload += encoder(txs[i][0], txs[i][1], txs[i][2])
+        for (i = 0; i < txs.length; i++) {
+            previousBalances[i] = await ethers.provider.getBalance(txs[i][2])
+            txData = encoder(...txs[i])
+            txObj.adds.push(txData.adds[0])
+            txObj.values.push(txData.values[0])
+            txObj.datas.push(txData.datas[0])
         }
 
-        // atomic launch with payload, value in Eth
-        await deployAtomic(payload, signer, "2")
+        await atomicFactory.launchAtomic(
+            txObj.adds,
+            txObj.values,
+            txObj.datas, {
+                value: ethers.utils.parseUnits("2", "ether").toHexString(),
+                gasPrice: 1,
+                gasLimit: 6500000,
+            }
+        );
 
-        for (i = 0; i < 3; i++) {
-            currentBalance = await provider.getBalance(txs[i][2])
+
+        for (i = 0; i < txs.length; i++) {
+            currentBalance = await ethers.provider.getBalance(txs[i][2])
             assert.equal(previousBalances[i].add(ethers.utils.parseUnits(txs[i][0], txs[i][1])).toString(), currentBalance.toString())
         }
     });
