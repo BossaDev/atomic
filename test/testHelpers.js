@@ -95,7 +95,7 @@ const encodeForAtomic = (addresses, weiValue, datas) => {
 
 const deployAtomicFactory = async () => {
   let fac = await ethers.getContractFactory("Atomic");
-  let ato = await factory.deploy();
+  let ato = await fac.deploy();
   return ato;
 };
 
