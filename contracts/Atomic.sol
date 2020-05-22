@@ -7,38 +7,54 @@ interface IERC20 {
 }
 
 contract AtomicProxy {
-    address payable owner = tx.origin;
-    address payable factory = msg.sender;
-    uint timestamp = now;
+    address payable public owner; 
+    address payable public factory;
+    uint time;
     
-    receiving () external payable {
+    constructor() public payable {
+        owner = tx.origin;
+        factory = msg.sender;
+        time = now;
+    }
+    
+    receive() external payable {
 
     }
 
     fallback () external payable {
-        (bool success, ) = factory.delegatecall(msg.data);
-        require (success, "Delegatecall failed");
+        // (bool success, ) = factory.delegatecall(msg.data);
+        // if (!success) {
+        //     assembly {
+        //         returndatacopy(0, 0, returndatasize())
+        //         revert(0, returndatasize())
+        //     }
+        // }
     }
 }
 
 contract Atomic {
-    address payable owner = msg.sender;
-    address payable self; //needed to keep the storage layout equal to AtomicProxy
-    uint timestamp = now;
+    address payable public owner = msg.sender;
+    address payable public factory; //needed to keep the storage layout equal to AtomicProxy
+    uint public time = now;
     
     function launchAtomic(address[] calldata _to, uint[] calldata _value, bytes[] calldata _data) external payable returns (bool success) {
         require (_to.length == _value.length && _value.length == _data.length, "Parameters are incorrect");
         AtomicProxy atomicProxy = new AtomicProxy();
         Atomic atomicInterface = Atomic(address(atomicProxy));
-        success = atomicInterface.execute(_to, _value, _data);
+        success = atomicInterface.execute{value: msg.value}(_to, _value, _data);
         atomicInterface.drain(address(0));
     }
     
     function execute(address[] calldata _to, uint[] calldata _value, bytes[] calldata _data) payable external returns (bool success) {
-        require (timestamp == now, "Execution can only be performed once");
+        require (time == now, "Execution can only be performed once");
         for (uint i = 0; i < _data.length; i++) {
             (success, ) = payable(_to[i]).call{value: _value[i]}(_data[i]);
-            require (success, "Failed executing transaction");
+            if (!success) {
+                assembly {
+                    returndatacopy(0, 0, returndatasize())
+                    revert(0, returndatasize())
+                }
+            }
         }
     }
     
