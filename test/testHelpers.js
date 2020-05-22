@@ -13,9 +13,9 @@ const getLatestBlock = async () => {
 // start chain forking mainnet on recent block
 const startChain = async () => {
   const ganache = Ganache.provider({
-    // fork: MAINNET_NODE_URL,
-    // network_id: 1,
-    // fork_block_number: (await getLatestBlock()) - 10, // forking 10 blocks behind to avoid bumping into sync differences
+    fork: MAINNET_NODE_URL,
+    network_id: 1,
+    fork_block_number: (await getLatestBlock()) - 10, // forking 10 blocks behind to avoid bumping into sync differences
   });
 
   const provider = new ethers.providers.Web3Provider(ganache);
@@ -28,20 +28,26 @@ const swapEthForDai = async function (value) {
     legos.uniswap.exchange.abi
   );
 
-  // encoding for atomic
-  let encoder = new ethers.utils.AbiCoder();
-  let types = ["address", "uint256", "bytes"]; // to, value, data
-
   let exchange = "0x2a1530C4C41db0B0b2bB646CB5Eb1A67b7158667"; // hardcoded dai exchange
 
   let calldata = uniswapExchangeInterface.functions.ethToTokenSwapInput.encode([
     "2",
     Math.floor(Date.now() / 1000) + 300,
   ]);
-  return encoder
-    .encode(types, [exchange, ethers.utils.parseEther(value), calldata])
-    .slice(2);
+  return {
+    adds: [exchange],
+    values: [ethers.utils.parseUnits(value, "ether").toString()],
+    datas: [calldata]
+}
 };
+
+const mergeTxObjs = function (first, second) {
+  return {
+    adds: first.adds.concat(second.adds),
+    values: first.values.concat(second.values),
+    datas: first.datas.concat(second.datas)
+  }
+}
 
 const atomicAbi = [
   {
@@ -119,4 +125,5 @@ module.exports = {
   // deployAtomic: deployAtomic,
   deployAtomicFactory: deployAtomicFactory,
   encodeForAtomic: encodeForAtomic,
+  mergeTxObjs: mergeTxObjs,
 };

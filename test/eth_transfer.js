@@ -13,9 +13,6 @@ const {
 
 // encoder from the block
 let encoder = function (value, unit, to) {
-    // encoding for atomic
-    let encoder = new ethers.utils.AbiCoder();
-    let types = ["address", "uint256", "bytes"]; // to, value, data
 
     return {
         adds: [to],
@@ -23,7 +20,6 @@ let encoder = function (value, unit, to) {
         datas: ["0x0"]
     }
 }
-
 
 describe("ETH Transfer", function () {
     it("Should transfer Ether", async function () {
@@ -66,7 +62,6 @@ describe("ETH Transfer", function () {
                 gasLimit: 6500000,
             }
         );
-
 
         for (i = 0; i < txs.length; i++) {
             currentBalance = await ethers.provider.getBalance(txs[i][2])

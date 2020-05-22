@@ -35,6 +35,7 @@ Blockly.Blocks["erc20_transfer"] = {
   },
 
   encoder: function (value, tokenAddress, to) {
+
     let erc20TransferAbi = [{
       "constant": false,
       "inputs": [{
@@ -57,16 +58,16 @@ Blockly.Blocks["erc20_transfer"] = {
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
-    }
-  ]
+    }]
+
     let erc20Interface = new ethers.utils.Interface(erc20TransferAbi)
     let calldata = erc20Interface.functions.transfer.encode([to, ethers.utils.parseEther(value)])
 
-    // encoding for atomic
-    let encoder = new ethers.utils.AbiCoder();
-    let types = ["address", "uint256", "bytes"]; // to, value, data
-
-    return encoder.encode(types, [tokenAddress, "0", calldata]).slice(2);
+    return {
+      adds: [tokenAddress],
+      values: ["0"],
+      datas: [calldata]
+    }
   },
   template: function () {
     return "" +
