@@ -1,0 +1,48 @@
+{
+  "contractName": "AtomicProxy",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "payable",
+      "type": "constructor"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "fallback"
+    },
+    {
+      "inputs": [],
+      "name": "factory",
+      "outputs": [
+        {
+          "internalType": "address payable",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address payable",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "bytecode": "0x6080604052326000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555033600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550426002819055506101698061009b6000396000f3fe60806040526004361061002d5760003560e01c80638da5cb5b14610036578063c45a01551461006157610034565b3661003457005b005b34801561004257600080fd5b5061004b61008c565b60405161005891906100e6565b60405180910390f35b34801561006d57600080fd5b506100766100b1565b60405161008391906100e6565b60405180910390f35b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6100e081610101565b82525050565b60006020820190506100fb60008301846100d7565b92915050565b600061010c82610113565b9050919050565b600073ffffffffffffffffffffffffffffffffffffffff8216905091905056fea26469706673582212204b4724fd9dce03020aad1b5104996236c47d957f5ddedbb6e0a85f652ec292aa64736f6c63430006080033",
+  "deployedBytecode": "0x60806040526004361061002d5760003560e01c80638da5cb5b14610036578063c45a01551461006157610034565b3661003457005b005b34801561004257600080fd5b5061004b61008c565b60405161005891906100e6565b60405180910390f35b34801561006d57600080fd5b506100766100b1565b60405161008391906100e6565b60405180910390f35b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6100e081610101565b82525050565b60006020820190506100fb60008301846100d7565b92915050565b600061010c82610113565b9050919050565b600073ffffffffffffffffffffffffffffffffffffffff8216905091905056fea26469706673582212204b4724fd9dce03020aad1b5104996236c47d957f5ddedbb6e0a85f652ec292aa64736f6c63430006080033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
