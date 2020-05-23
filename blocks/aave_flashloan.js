@@ -50,10 +50,37 @@ Blockly.Blocks["aave_flashloan"] = {
       extensions: ["colours_looks", "shape_statement"],
     });
   },
-  encoder: function (token, value, substack, loanerAdd) {
+  encoder: function (token, value, substack) {
     const aave_core = "0x3dfd23A6c5E8BbcFc9581d2E864a68feb6a076d3";
     const eth_token = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
     const loanerAdd = "0xdeployedContract";
+    const loanerABI = [
+      {
+        constant: false,
+        inputs: [
+          {
+            internalType: "address",
+            name: "assetToFlashLoan",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "amountToLoan",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "_params",
+            type: "bytes",
+          },
+        ],
+        name: "initateFlashLoan",
+        outputs: [],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ];
 
     if (loanerAdd == undefined) {
       loanerAdd = "0xdeployedContract";

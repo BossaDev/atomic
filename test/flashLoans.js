@@ -34,31 +34,6 @@ const loanerABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "address payable",
-        name: "assetToFlashLoan",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amountToLoan",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "_params",
-        type: "bytes",
-      },
-    ],
-    name: "initateFlash",
-    outputs: [],
-    payable: true,
-    stateMutability: "payable",
-    type: "function",
-  },
 ];
 const encoder = (token, value, substack, loanerAdd) => {
   const aave_core = "0x3dfd23A6c5E8BbcFc9581d2E864a68feb6a076d3";
