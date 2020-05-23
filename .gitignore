@@ -5,6 +5,10 @@
 /node_modules
 npm-*
 
+# solc/buidler
+/artifacts
+/cache
+
 # Localization / I18N
 common.pyc
 .settings

@@ -47,7 +47,8 @@ Blockly.Blocks["aave_flashloan"] = {
       // }],
       // "nextStatement": null,
       category: Blockly.Categories.control,
-      extensions: ["colours_looks", "shape_statement"],
+      colour: "#B6509E",
+      extensions: ["shape_statement"],
     });
   },
   encoder: function (token, value, substack) {
@@ -154,7 +155,8 @@ Blockly.Blocks["aave_token_list"] = {
           ],
         },
       ],
-      extensions: ["colours_looks", "output_string"],
+      colour: "#B6509E",
+      extensions: ["output_string"],
     });
   },
 };
