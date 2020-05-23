@@ -241,7 +241,7 @@ describe("Uniswap V2 Swap", function () {
 
         console.log(atomicProxyAddress)
 
-        await atomic.execute(payload.adds, payload.values, payload.datas, {
+        await atomic.launchAtomic(payload.adds, payload.values, payload.datas, {
             value: ethers.utils.parseUnits("2", "ether").toHexString()
         })
 
