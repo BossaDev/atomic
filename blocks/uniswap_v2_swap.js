@@ -27,9 +27,9 @@ Blockly.Blocks["uniswap_v2_swap"] = {
           name: "TOKEN2",
         },
       ],
-      colour: "#ff007b",
       category: Blockly.Categories.pen,
-      extensions: ["colours_more", "shape_statement", "scratch_extension"],
+      colour: "#ff007b",
+      extensions: ["shape_statement", "scratch_extension"],
     });
   },
   encoder: async function (value, tokenFrom, tokenTo) {
@@ -268,7 +268,8 @@ Blockly.Blocks["uniswap_token_list"] = {
           ["WETH", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
         ],
       }, ],
-      extensions: ["colours_more", "output_string"],
+      colour: "#ff007b",
+      extensions: ["output_string"],
     });
   },
 };
