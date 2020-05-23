@@ -36,7 +36,11 @@ const eth_transfer = {
     let encoder = new ethers.utils.AbiCoder();
     let types = ["address", "uint256", "bytes"]; // to, value, data
 
-    return encoder.encode(types, [to, ethers.utils.parseUnits(value, unit).toString(), "0x0"]).slice(2);
+    return {
+      adds: [to],
+      values: [ethers.utils.parseUnits(value, unit).toString()],
+      datas: ["0x0"]
+    }
   },
   template: function () {
     return "" +

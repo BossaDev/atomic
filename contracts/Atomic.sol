@@ -1,23 +1,24 @@
 pragma solidity 0.6.8;
 pragma experimental ABIEncoderV2;
 
+import "./Create2.sol";
+
 interface IERC20 {
     function balanceOf(address account) external view returns (uint256);
     function transfer(address recipient, uint256 amount) external returns (bool);
 }
 
+// atomicProxy CANNOT have a constructor, deployed code is used for deployment
 contract AtomicProxy {
     address payable public owner; 
     address payable public factory;
     
-    constructor() public payable {
+    constructor() public {
         owner = tx.origin;
         factory = msg.sender;
     }
     
-    receive() external payable {
-
-    }
+    receive() external payable {}
 
     fallback () external payable {
         owner = msg.sender;
@@ -33,28 +34,47 @@ contract AtomicProxy {
 
 contract Atomic {
     address payable public owner = msg.sender;
-    address payable public factory; //needed to keep the storage layout equal to AtomicProxy
+    address payable private factory; //needed to keep the storage layout equal to AtomicProxy
+    mapping (address => uint) public atomicNonce;
+    bytes proxyBytecode;
+    event atomicLaunch(address atomicContract);
+    
+    constructor (bytes memory _proxyBytecode) public {
+        proxyBytecode = _proxyBytecode;
+    }
     
     function launchAtomic(address[] calldata _to, uint[] calldata _value, bytes[] calldata _data) external payable returns (bool success) {
         require (_to.length == _value.length && _value.length == _data.length, "Parameters are incorrect");
-        AtomicProxy atomicProxy = new AtomicProxy();
-        // Atomic atomicInterface = Atomic(address(atomicProxy));
-        factory = address(atomicProxy);
+        
+        address payable atomicProxy = Create2.deploy(getSalt(msg.sender), proxyBytecode);
+        atomicNonce[msg.sender]++;
+        emit atomicLaunch(atomicProxy);
+        
         bytes memory txData = abi.encodeWithSelector(
                 Atomic.execute.selector,
                 _to,
                 _value,
                 _data
             );
-        (success, ) = address(atomicProxy).call{value: msg.value}(txData);
+        (success, ) = atomicProxy.call{value: msg.value}(txData);
         if (!success) {
             assembly {
                 returndatacopy(0, 0, returndatasize())
                 revert(0, returndatasize())
             }
         }
-        // success = atomicInterface.execute{value: msg.value}(_to, _value, _data);
         // atomicInterface.drain(address(0));
+    }
+    
+    function getNextAtomic(address _owner) public view returns (address) {
+        return Create2.computeAddress(
+            getSalt(_owner),
+            proxyBytecode
+        );
+    }
+    
+    function getSalt(address _owner) internal view returns (bytes32 salt) {
+        return keccak256(abi.encodePacked(_owner,atomicNonce[_owner]));
     }
     
     function execute(address[] calldata _to, uint[] calldata _value, bytes[] calldata _data) payable external returns (bool success) {
@@ -83,4 +103,16 @@ contract Atomic {
     fallback () external payable {
         revert("Not correctly encoded for execute or drain.");
     }
+}
+
+contract receiver {
+    
+    function balance() public view returns (uint) {
+        return address(this).balance;
+    }
+    
+    fallback () external payable {
+        // revert("fallback do receiver");
+    }
+    
 }

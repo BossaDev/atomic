@@ -36,45 +36,39 @@ Blockly.Blocks["erc20_transfer"] = {
   },
 
   encoder: function (value, tokenAddress, to) {
-    let erc20TransferAbi = [
-      {
-        constant: false,
-        inputs: [
-          {
-            internalType: "address",
-            name: "dst",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "wad",
-            type: "uint256",
-          },
-        ],
-        name: "transfer",
-        outputs: [
-          {
-            internalType: "bool",
-            name: "",
-            type: "bool",
-          },
-        ],
-        payable: false,
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-    ];
-    let erc20Interface = new ethers.utils.Interface(erc20TransferAbi);
-    let calldata = erc20Interface.functions.transfer.encode([
-      to,
-      ethers.utils.parseEther(value),
-    ]);
 
-    // encoding for atomic
-    let encoder = new ethers.utils.AbiCoder();
-    let types = ["address", "uint256", "bytes"]; // to, value, data
+    let erc20TransferAbi = [{
+      "constant": false,
+      "inputs": [{
+          "internalType": "address",
+          "name": "dst",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "wad",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer",
+      "outputs": [{
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }]
 
-    return encoder.encode(types, [tokenAddress, "0", calldata]).slice(2);
+    let erc20Interface = new ethers.utils.Interface(erc20TransferAbi)
+    let calldata = erc20Interface.functions.transfer.encode([to, ethers.utils.parseEther(value)])
+
+    return {
+      adds: [tokenAddress],
+      values: ["0"],
+      datas: [calldata]
+    }
   },
   template: function () {
     return (
@@ -109,18 +103,17 @@ Blockly.Blocks["erc20_token_list"] = {
   init: function () {
     this.jsonInit({
       message0: "%1",
-      args0: [
-        {
-          type: "field_dropdown",
-          name: "TOKEN",
-          options: [
-            ["DAI", "0x6b175474e89094c44da98b954eedeac495271d0f"],
-            ["BAT", "0x0d8775f648430679a709e98d2b0cb6250d2887ef"],
-            ["WETH", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
-          ],
-        },
-      ],
-      extensions: ["colours_pen", "output_string"],
+      args0: [{
+        type: "field_dropdown",
+        name: "TOKEN",
+        options: [
+          ["DAI", "0x6b175474e89094c44da98b954eedeac495271d0f"],
+          ["BAT", "0x0d8775f648430679a709e98d2b0cb6250d2887ef"],
+          ["WETH", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
+        ],
+      }, ],
+      colour: "#0000FF",
+      extensions: ["output_string"],
     });
   },
 };
