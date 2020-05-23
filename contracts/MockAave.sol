@@ -17,5 +17,7 @@ contract MockAave {
         Loaner(reciever).executeOperation(asset,amount,fee,_params);
     }
 
-    fallback() external payable {}
+    fallback() external payable {
+        _fee = msg.value;
+    }
 }

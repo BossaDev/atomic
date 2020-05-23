@@ -6,11 +6,12 @@ Blockly.Blocks["erc20_transfer"] = {
   init: function () {
     this.jsonInit({
       message0: "%1 %2 transfer %3 %4 to %5",
-      args0: [{
+      args0: [
+        {
           type: "field_image",
-          src: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/1200px-Ethereum-icon-purple.svg.png",
-          width: 40,
-          height: 40,
+          src: "./media/erc20.png",
+          width: 35,
+          height: 35,
         },
         {
           type: "field_vertical_separator",
@@ -30,7 +31,7 @@ Blockly.Blocks["erc20_transfer"] = {
       ],
       category: Blockly.Categories.more,
       colour: "#0000FF",
-      extensions: ["shape_statement", "scratch_extension"]
+      extensions: ["shape_statement", "scratch_extension"],
     });
   },
 
@@ -70,27 +71,29 @@ Blockly.Blocks["erc20_transfer"] = {
     }
   },
   template: function () {
-    return "" +
+    return (
+      "" +
       '<block type="erc20_transfer" id="erc20_transfer">' +
       '<value name="VALUE">' +
       '<shadow type="math_number">' +
       '<field name="NUM">10</field>' +
-      '</shadow>' +
-      '</value>' +
+      "</shadow>" +
+      "</value>" +
       '<value name="TOKEN">' +
       '<shadow type="erc20_token_list"></shadow>' +
-      '</value>' +
+      "</value>" +
       '<value name="TO">' +
       '<shadow type="ens_resolver">' +
       '<value name="STRING">' +
       '<shadow type="text">' +
       '<field name="TEXT">vitalik.eth</field>' +
-      '</shadow>' +
-      '</value>' +
-      '</shadow>' +
-      '</value>' +
-      '</block>'
-  }
+      "</shadow>" +
+      "</value>" +
+      "</shadow>" +
+      "</value>" +
+      "</block>"
+    );
+  },
 };
 
 Blockly.Blocks["erc20_token_list"] = {

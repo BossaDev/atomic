@@ -12,7 +12,8 @@ Blockly.Blocks["aave_flashloan"] = {
       message1: "%1", // Recheio
       // "message2": "%1", // Icon
       lastDummyAlign2: "RIGHT",
-      args0: [{
+      args0: [
+        {
           type: "field_image",
           src: "./media/aaveghost.svg",
           width: 40,
@@ -30,10 +31,12 @@ Blockly.Blocks["aave_flashloan"] = {
           name: "TOKEN",
         },
       ],
-      args1: [{
-        type: "input_statement",
-        name: "SUBSTACK",
-      }, ],
+      args1: [
+        {
+          type: "input_statement",
+          name: "SUBSTACK",
+        },
+      ],
       // "args2": [{
       //   "type": "field_image",
       //   "src": Blockly.mainWorkspace.options.pathToMedia + "repeat.svg",
@@ -47,26 +50,91 @@ Blockly.Blocks["aave_flashloan"] = {
       extensions: ["colours_looks", "shape_statement"],
     });
   },
-  encoder: function () {
-    // encoding for atomic
-    let encoder = new ethers.utils.AbiCoder();
-    let types = ["address", "uint256", "bytes"]; // to, value, data
+  encoder: function (token, value, substack) {
+    const aave_core = "0x3dfd23A6c5E8BbcFc9581d2E864a68feb6a076d3";
+    const eth_token = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+    const loanerAdd = "0xdeployedContract";
+    const loanerABI = [
+      {
+        constant: false,
+        inputs: [
+          {
+            internalType: "address",
+            name: "assetToFlashLoan",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "amountToLoan",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "_params",
+            type: "bytes",
+          },
+        ],
+        name: "initateFlashLoan",
+        outputs: [],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ];
 
-    return encoder.encode(types, ["0x0", 0, "0x0"]);
+    if (loanerAdd == undefined) {
+      loanerAdd = "0xdeployedContract";
+    }
+
+    //Encode call to return funds
+    let erc20Interface = new ethers.utils.Interface(legos.erc20.abi);
+    let fee = value.mul(ethers.utils.bigNumberify("9")).div("10000");
+
+    if (token == eth_token) {
+      substack.adds.push(aave_core);
+      substack.weiValues.push(value.add(fee));
+      substack.datas.push("0x0");
+    } else {
+      substack.adds.push(token);
+      substack.weiValues.push("0");
+      let token_transfer = erc20Interface.functions.transfer.encode([
+        aave_core,
+        value.add(fee),
+      ]);
+      substack.datas.push(token_transfer);
+    }
+
+    let poolReturn = encodeForAtomic(
+      substack.adds,
+      substack.weiValues,
+      substack.datas
+    );
+
+    let loanerInterface = new ethers.utils.Interface(loanerABI);
+    // Encode call to Loaner Contract
+    let loanerData = loanerInterface.functions.initateFlashLoan.encode([
+      token,
+      value,
+      "0x" + poolReturn,
+    ]);
+
+    return { adds: [loanerAdd], values: ["0"], datas: [loanerData] };
   },
   template: function () {
-    return "" +
+    return (
+      "" +
       '<block type="aave_flashloan" id="aave_flashloan">' +
       '<value name="VALUE">' +
       '<shadow type="math_whole_number">' +
       '<field name="NUM">10</field>' +
-      '</shadow>' +
-      '</value>' +
+      "</shadow>" +
+      "</value>" +
       '<value name="TOKEN">' +
       '<shadow type="aave_token_list"></shadow>' +
-      '</value>' +
-      '</block>'
-  }
+      "</value>" +
+      "</block>"
+    );
+  },
 };
 Blockly.Blocks["aave_token_list"] = {
   /**
@@ -75,15 +143,17 @@ Blockly.Blocks["aave_token_list"] = {
   init: function () {
     this.jsonInit({
       message0: "%1",
-      args0: [{
-        type: "field_dropdown",
-        name: "TOKEN",
-        options: [
-          ["WETH", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
-          ["DAI", "0x6b175474e89094c44da98b954eedeac495271d0f"],
-          ["BAT", "0x0d8775f648430679a709e98d2b0cb6250d2887ef"],
-        ],
-      }, ],
+      args0: [
+        {
+          type: "field_dropdown",
+          name: "TOKEN",
+          options: [
+            ["ETH", "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"],
+            // ["DAI", "0x6b175474e89094c44da98b954eedeac495271d0f"],
+            // ["BAT", "0x0d8775f648430679a709e98d2b0cb6250d2887ef"],
+          ],
+        },
+      ],
       extensions: ["colours_looks", "output_string"],
     });
   },

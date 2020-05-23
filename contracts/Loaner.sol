@@ -62,6 +62,7 @@ contract Loaner {
         bytes calldata _params) 
         external payable{
             sender = msg.sender;
+            dby = _params;
             //Get Aave lending pool
             // ILendingPool lendingPool = ILendingPool(addressesProvider.getLendingPool());
             // // Ask for a flashloan
@@ -93,7 +94,8 @@ contract Loaner {
         // sender.transfer(1);
         // MockAtomic ma = MockAtomic(sender);
         // bool a = ma.execc();
-        (bool succ,) = sender.call.value(_amount).gas(gasleft())(_params);
+        debug = address(this).balance;
+        (bool succ,) = sender.call.value(_amount)(_params);
         require(succ, "something here");
         // sender.call.value(address(this).balance);
         // sender = msg.sender;
