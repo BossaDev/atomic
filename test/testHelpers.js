@@ -1,9 +1,12 @@
 // const ethers = require("ethers");
 const Ganache = require("ganache-core");
 
-const { legos } = require("@studydefi/money-legos");
+const {
+  legos
+} = require("@studydefi/money-legos");
 
 const MAINNET_NODE_URL = "https://cloudflare-eth.com";
+// const MAINNET_NODE_URL = 'https://mainnet.infura.io/v3/5fefaaca9194491db58585e0b156d79b';
 
 const getLatestBlock = async () => {
   let provider = new ethers.getDefaultProvider();
@@ -13,6 +16,7 @@ const getLatestBlock = async () => {
 // start chain forking mainnet on recent block
 const startChain = async () => {
   const ganache = Ganache.provider({
+    mnemonic: "forward attract escape lottery blade book stay better wreck discover eyebrow eagle",
     fork: MAINNET_NODE_URL,
     network_id: 1,
     fork_block_number: (await getLatestBlock()) - 10, // forking 10 blocks behind to avoid bumping into sync differences
@@ -38,7 +42,7 @@ const swapEthForDai = async function (value) {
     adds: [exchange],
     values: [ethers.utils.parseUnits(value, "ether").toString()],
     datas: [calldata]
-}
+  }
 };
 
 const mergeTxObjs = function (first, second) {
@@ -49,50 +53,137 @@ const mergeTxObjs = function (first, second) {
   }
 }
 
-const atomicAbi = [
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_token",
-        type: "address",
-      },
-    ],
-    name: "drain",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+const atomicAbi = [{
+    "inputs": [{
+      "internalType": "bytes",
+      "name": "_proxyBytecode",
+      "type": "bytes"
+    }],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "_to",
-        type: "address[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "_value",
-        type: "uint256[]",
-      },
-      {
-        internalType: "bytes[]",
-        name: "_data",
-        type: "bytes[]",
-      },
-    ],
-    name: "execute",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "success",
-        type: "bool",
-      },
-    ],
-    stateMutability: "payable",
-    type: "function",
+    "anonymous": false,
+    "inputs": [{
+      "indexed": false,
+      "internalType": "address",
+      "name": "atomicContract",
+      "type": "address"
+    }],
+    "name": "atomicLaunch",
+    "type": "event"
   },
+  {
+    "stateMutability": "payable",
+    "type": "fallback"
+  },
+  {
+    "inputs": [{
+      "internalType": "address",
+      "name": "",
+      "type": "address"
+    }],
+    "name": "atomicNonce",
+    "outputs": [{
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{
+      "internalType": "address",
+      "name": "_token",
+      "type": "address"
+    }],
+    "name": "drain",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{
+        "internalType": "address[]",
+        "name": "_to",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_value",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "bytes[]",
+        "name": "_data",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "execute",
+    "outputs": [{
+      "internalType": "bool",
+      "name": "success",
+      "type": "bool"
+    }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [{
+      "internalType": "address",
+      "name": "_owner",
+      "type": "address"
+    }],
+    "name": "getNextAtomic",
+    "outputs": [{
+      "internalType": "address",
+      "name": "",
+      "type": "address"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{
+        "internalType": "address[]",
+        "name": "_to",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_value",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "bytes[]",
+        "name": "_data",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "launchAtomic",
+    "outputs": [{
+      "internalType": "bool",
+      "name": "success",
+      "type": "bool"
+    }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{
+      "internalType": "address payable",
+      "name": "",
+      "type": "address"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ];
+
+const atomicAddress = "0xE66150F89a0c39C24af30E039E85F3066b236d78" // atomic mainnet address
 
 const encodeForAtomic = (addresses, weiValue, datas) => {
   let inter = new ethers.utils.Interface(atomicAbi);
@@ -105,17 +196,14 @@ const deployAtomicFactory = async () => {
   return ato;
 };
 
-// // atomic launch with payload, value in Eth
-// const deployAtomic = async (payload, signer, value = "0") => {
-//   // let factory = await ethers.getContractFactory("Atomic");
-//   let factory = new ethers.ContractFactory(atomicAbi, atomicBytecode, signer);
-//   let atomicContract = await factory.deploy(payload, {
-//     value: ethers.utils.parseUnits(value, "ether").toHexString(),
-//     gasPrice: 1,
-//     gasLimit: 6721975,
-//   });
-//   return atomicContract;
-// };
+const getMainnetAtomic = (provider) => {
+  let atomicContract = new ethers.Contract(atomicAddress, atomicAbi, provider);
+  return atomicContract
+}
+
+const getUserAddress = () => {
+  return "0xDA8322AEa6C4Eb8C7E2E86EF89FADCf82445172E" // testing user, first address of the mnemonic set on ganache.
+}
 
 module.exports = {
   atomicAbi: atomicAbi,
@@ -126,4 +214,7 @@ module.exports = {
   deployAtomicFactory: deployAtomicFactory,
   encodeForAtomic: encodeForAtomic,
   mergeTxObjs: mergeTxObjs,
-};
+  getMainnetAtomic: getMainnetAtomic,
+  atomicAddress: atomicAddress,
+  getUserAddress: getUserAddress
+}
