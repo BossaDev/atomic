@@ -17,7 +17,7 @@ const compound_supply = {
         },
         {
           type: "input_value",
-          name: "VALUE",
+          name: "VAL",
         },
         {
           type: "input_value",
@@ -26,27 +26,83 @@ const compound_supply = {
       ],
       colour: "#070a0e",
       category: Blockly.Categories.more,
-      extensions: ["colours_control", "shape_statement", "scratch_extension"],
+      extensions: ["shape_statement", "scratch_extension"],
     });
   },
-  //   encoder: function (value, unit, to) {
-  //     // encoding for atomic
-  //     let encoder = new ethers.utils.AbiCoder();
-  //     let types = ["address", "uint256", "bytes"]; // to, value, data
+  encoder: function (token, value) {
+    const cETH = "0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5";
+    const cDAI = "0x5d3a536e4d6dbd6114cc1ead35777bab948e3643";
 
-  //     return encoder
-  //       .encode(types, [
-  //         to,
-  //         ethers.utils.parseUnits(value, unit).toString(),
-  //         "0x0",
-  //       ])
-  //       .slice(2);
-  //   },
+    let substack = {
+      adds: [],
+      values: [],
+      datas: [],
+    };
+
+    //1. Mint the desired collateral
+    let tkAddress;
+    let tkData;
+    let tkValue;
+    if (token == "ETH") {
+      tkAddress = cETH;
+      let tkAbi = [
+        {
+          constant: false,
+          inputs: [],
+          name: "mint",
+          outputs: [],
+          payable: true,
+          stateMutability: "payable",
+          type: "function",
+          signature: "0x1249c58b",
+        },
+      ];
+
+      let inter = new ethers.utils.Interface(tkAbi);
+      tkData = inter.functions.mint.encode([]);
+      tkValue = ethers.utils.parseEther(value);
+    } else if (token == "DAI") {
+      tkAddress = cDAI;
+      let tkAbi = [
+        {
+          constant: false,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "mintAmount",
+              type: "uint256",
+            },
+          ],
+          name: "mint",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "nonpayable",
+          type: "function",
+          signature: "0xa0712d68",
+        },
+      ];
+
+      let inter = new ethers.utils.Interface(tkAbi);
+      tkData = inter.functions.mint.encode([ethers.utils.parseEther(value)]);
+      tkValue = "0";
+    }
+    substack.adds.push(tkAddress);
+    substack.values.push(tkValue);
+    substack.datas.push(tkData);
+
+    return substack;
+  },
   template: function () {
     let ret =
       "" +
-      '<block type="compoud_supply" id="compound_supply">' +
-      '<value name="VALUE">' +
+      '<block type="compound_supply" id="compound_supply">' +
+      '<value name="VAL">' +
       '<shadow type="math_number">' +
       '<field name="NUM">10</field>' +
       "</shadow>" +
@@ -78,7 +134,8 @@ Blockly.Blocks["compound-unit-list"] = {
           ],
         },
       ],
-      extensions: ["colours_control", "output_string"],
+      colour: "#070a0e",
+      extensions: ["colours_pen", "output_string"],
     });
   },
 };

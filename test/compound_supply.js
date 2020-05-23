@@ -93,17 +93,61 @@ describe("Compound Supply", function () {
     atomicFactory = await AtomicFactory.deploy();
   });
 
-  it("Should supply liquidity correctly", async function () {
-    let txs = encoder("ETH", "5");
-    console.log(txs);
+  it("Should supply liquidity with ETH", async function () {
+    let txs = encoder("ETH", "8");
+    // console.log(txs);
 
     let Daipayload = encoder("DAI", "10");
-    console.log(Daipayload);
+    // console.log(Daipayload);
 
     await atomicFactory.launchAtomic(txs.adds, txs.values, txs.datas, {
       value: ethers.utils.parseUnits("10", "ether").toHexString(),
       gasPrice: 1,
       gasLimit: 6500000,
     });
+
+    let atd = await atomicFactory.factory();
+    // console.log("ato", atd);
+
+    let proxy = new ethers.Contract(
+      atd,
+      atomicFactory.interface.abi,
+      ethers.provider
+    );
+    let own = await proxy.owner();
+    let cEThCoontract = new ethers.Contract(
+      cETH,
+      legos.erc20.abi,
+      ethers.provider
+    );
+    let bal = await cEThCoontract.balanceOf(proxy.address);
+    console.log(bal.toString());
   });
+
+  //it("Should supply liquidity with DAI", async function () {
+  //     let txs = encoder("DAI", "1");
+  //     // console.log(txs);
+  //     let Daipayload = encoder("DAI", "10");
+  //     // console.log(Daipayload);
+  //     await atomicFactory.launchAtomic(txs.adds, txs.values, txs.datas, {
+  //       value: ethers.utils.parseUnits("10", "ether").toHexString(),
+  //       gasPrice: 1,
+  //       gasLimit: 6500000,
+  //     });
+  //     let atd = await atomicFactory.factory();
+  //     // console.log("ato", atd);
+  //     let proxy = new ethers.Contract(
+  //       atd,
+  //       atomicFactory.interface.abi,
+  //       ethers.provider
+  //     );
+  //     let own = await proxy.owner();
+  //     let cEThCoontract = new ethers.Contract(
+  //       cETH,
+  //       legos.erc20.abi,
+  //       ethers.provider
+  //     );
+  //     let bal = await cEThCoontract.balanceOf(own);
+  //     console.log(bal.toString());
+  //});
 });
