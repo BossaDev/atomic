@@ -21,7 +21,8 @@ Blockly.Blocks["ens_resolver"] = {
         },
       ],
       category: Blockly.Categories.operators,
-      extensions: ["colours_sensing", "output_string"],
+      colour: "#5383fe",
+      extensions: ["output_string"],
     });
   },
   encoder: function () {

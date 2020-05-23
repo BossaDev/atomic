@@ -15,8 +15,8 @@ Blockly.Blocks["uniswap_v2_flashswap"] = {
       args0: [{
           type: "field_image",
           src: "https://uniswap.exchange/static/media/logo_white.edb44e56.svg",
-          width: 40,
-          height: 30,
+          width: 50,
+          height: 50,
         },
         {
           type: "field_vertical_separator",
