@@ -7,8 +7,10 @@ const {
 
 const {
     startChain,
-    encodeForAtomic,
+    atomicAbi,
     getMainnetAtomic,
+    swapEthForDai,
+    mergeTxObjs
 } = require("./testHelpers");
 
 const loanerABI = [{
@@ -71,44 +73,57 @@ const encoder = async (value, token, substack, loanerAdd) => {
     let uniswapFactory = new ethers.Contract("0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f", uniswapFactoryAbi, provider)
     let exchange = await uniswapFactory.getPair("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", token);
 
-    console.log("exchange", exchange)
+    let val = ethers.utils.bigNumberify(value)
+    let fee = val.mul(ethers.utils.bigNumberify("50")).div("10000");
 
     // Transfer tokens back to exchange
-    substack.adds.push(exchange);
-    substack.weiValues.push("0");
+    substack.adds.push("0x6b175474e89094c44da98b954eedeac495271d0f");
+    substack.values.push("0");
     let token_transfer = erc20Interface.functions.transfer.encode([
         exchange,
-        value,
+        val.add(fee),
     ]);
     substack.datas.push(token_transfer);
 
-    let poolReturn = encodeForAtomic(
-        substack.adds,
-        substack.weiValues,
-        substack.datas
-    );
+    let inter = new ethers.utils.Interface(atomicAbi);
+    let poolReturn = inter.functions.execute.encode([substack.adds, substack.values, substack.datas])
 
     let loanerInterface = new ethers.utils.Interface(loanerABI);
     // Encode call to Loaner Contract
     let loanerData = loanerInterface.functions.initateFlashswap.encode([
         token,
         value,
-        "0x" + poolReturn,
+        poolReturn,
     ]);
 
-    return {
+    let daiSwap = swapEthForDai("10")
+
+    let daiTransfer = erc20Interface.functions.transfer.encode([
+        loanerAdd,
+        ethers.utils.parseEther("500").toString(),
+    ]);
+
+    let transferDai = {
+        adds: [legos.erc20.dai.address],
+        values: ["0"],
+        datas: daiTransfer
+    }
+
+    daiSwap = mergeTxObjs(daiSwap, transferDai)
+
+    return mergeTxObjs(daiSwap, {
         adds: [loanerAdd],
         values: ["0"],
         datas: [loanerData]
-    };
+    });
 };
 
-describe("uniswap Flash Swap", function () {
+describe("Uniswap V2 Flash Swap", function () {
 
     let loanerContract = {};
     let substack = {
         adds: [],
-        weiValues: [],
+        values: [],
         datas: [],
     };
 
@@ -123,8 +138,8 @@ describe("uniswap Flash Swap", function () {
 
         const LoanerFactory = await ethers.getContractFactory("Flashswap");
         loanerContract = await LoanerFactory.deploy();
-        
-        let amount = ethers.utils.parseEther("10");
+
+        let amount = ethers.utils.parseEther("50");
         // console.log("Atomic Factory", atomicFactory.address);
 
         //encode call to factory
@@ -135,7 +150,7 @@ describe("uniswap Flash Swap", function () {
         let atomic = getMainnetAtomic(signer)
 
         await atomic.launchAtomic(txs.adds, txs.values, txs.datas, {
-            value: ethers.utils.parseUnits("2", "ether").toHexString()
+            value: ethers.utils.parseUnits("50", "ether").toHexString()
         })
     });
 });
