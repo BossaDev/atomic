@@ -77,7 +77,7 @@
       });
 
       picoModal(
-        "<h2>Welcome to Atomic (Ninja)!</h2>" +
+        "<h2>Welcome to Atomic Ninja!</h2>" +
         "<p>Send complex atomic transactions to Ethereum like never before.</p>" +
         "<h3>Quick Start</h3>" +
         "<p>On the left of the screen there is a list of sorted, disconnected blocks. This is your <b>toolbox</b>.</p>" +
@@ -106,14 +106,16 @@
 
     #blocklyDiv {
       float: right;
-      height: 100%;
+      position: relative;
+      top: -28px;
+      height: 97%;
       width: 100%;
     }
   </style>
 </head>
 
 <body onload="start()">
-  <div id="portis" style="position: relative; top: 50px; z-index: 11000; float: right;"><img src="https://www.portis.io/static/logo-small.svg" style="position: relative; top: 5px;" width="25" height="25">&nbsp;<span id="walletMsg">Not Connected</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+  <div id="portis" style="position: relative; top: 10px; z-index: 11000; float: right;"><img src="https://www.portis.io/static/logo-small.svg" style="position: relative; top: 5px;" width="25" height="25">&nbsp;<span id="walletMsg">Not Connected</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
   <div id="blocklyDiv"></div>
 </body>
 

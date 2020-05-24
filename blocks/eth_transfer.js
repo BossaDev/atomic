@@ -28,6 +28,7 @@ const eth_transfer = {
         },
       ],
       category: Blockly.Categories.more,
+      tooltip: "Send ETH: Transfer ether to the provided address.",
       extensions: ["colours_control", "shape_statement", "scratch_extension"],
     });
   },

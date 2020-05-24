@@ -30,9 +30,11 @@ Blockly.Blocks["atomic_transaction_options"] = {
         },
       ],
       category: Blockly.Categories.event,
+      tooltip: "Atomic transaction start block (w/ options): Use this block to start a transaction (or any of similar shape). This one is used if you want to send Eth along with your atomic transaction.",
       extensions: ["colours_event", "shape_hat"],
     });
   },
+  category: "Atomic",
   template: function () {
     return "" +
       '<block type="atomic_transaction_options" id="atomic_transaction_options">' +
