@@ -70,7 +70,7 @@ describe("ERC20 Transfer", function () {
             datas: []
         }
         // swapping 1 eth for dai to enable testing (uniswap)
-        txObj = mergeTxObjs(txObj, await swapEthForDai("1"))
+        txObj = mergeTxObjs(txObj, swapEthForDai("1"))
 
         // encoding and collecting current dai balances
         for (i = 0; i < txs.length; i++) {

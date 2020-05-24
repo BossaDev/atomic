@@ -27,7 +27,7 @@ const startChain = async () => {
 };
 
 // swap value (in eth) for dai to enable testing of blocks that require erc20 tokens, returns payload of swap
-const swapEthForDai = async function (value) {
+const swapEthForDai = function (value) {
   let uniswapExchangeInterface = new ethers.utils.Interface(
     legos.uniswap.exchange.abi
   );

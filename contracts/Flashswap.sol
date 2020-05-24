@@ -14,11 +14,12 @@ interface IUniswapV2Exchange {
 
 interface IERC20 {
     function transfer(address recipient, uint256 amount) external returns (bool);
+    function balanceOf(address who) external view returns (uint);
 }
 
 contract Flashswap is IUniswapV2Callee {
 
-    address payable public sender;
+    address payable public atomic;
     address public weth = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
     address public asset;
 
@@ -40,7 +41,7 @@ contract Flashswap is IUniswapV2Callee {
         uint amountToLoan,
         bytes calldata _params) 
         external payable{
-            sender = msg.sender;
+            atomic = msg.sender;
             asset = assetToFlashSwap;
             emit initiate();
 
@@ -55,9 +56,23 @@ contract Flashswap is IUniswapV2Callee {
     function uniswapV2Call(address sender, uint amount0, uint amount1, bytes calldata data) external override {
         emit callback();
 
-        require(IERC20(asset).transfer(sender, amount1), "Flashswap proxy: Failed transfering tokens back to atomicProxy");
+        bytes memory txData = abi.encodeWithSelector(
+                IERC20.transfer.selector,
+                msg.sender,
+                IERC20(asset).balanceOf(address(this))
+            );
+        (bool success, ) = asset.call(txData);
+        if (!success) {
+            assembly {
+                returndatacopy(0, 0, returndatasize())
+                revert(0, returndatasize())
+            }
+        }
+        require(success, "FAILED HERE");
+
+        // require(IERC20(asset).transfer(atomic, amount1), "Flashswap proxy: Failed transfering tokens back to atomicProxy");
         
-        (bool succ,) = sender.call.value(0)(data);
+        (bool succ,) = atomic.call.value(0)(data);
         require(succ, "Flashswap proxy: Callback to atomic failed");
 
         // block will  have to payback amount before finishing execution of substack
