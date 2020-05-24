@@ -25,6 +25,7 @@ const compound_borrow = {
       ],
       colour: "#070a0e",
       category: Blockly.Categories.more,
+      tooltip: "Compound Borrow: Use to borrow tokens from Compound (ETH will be auto supplied)",
       extensions: ["shape_statement", "scratch_extension"],
     });
   },

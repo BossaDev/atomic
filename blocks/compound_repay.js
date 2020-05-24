@@ -25,6 +25,7 @@ const compound_repay = {
       ],
       colour: "#070a0e",
       category: Blockly.Categories.more,
+      tooltip: "Compound Repay: Repay borrowed value from Compound.",
       extensions: ["shape_statement", "scratch_extension"],
     });
   },

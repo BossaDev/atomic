@@ -23,6 +23,7 @@ const poolTogether_ticket = {
       ],
       colour: "#e2e8f0",
       category: Blockly.Categories.more,
+      tooltip: "Pool Together Ticket: Buy tickets from Pool together.",
       extensions: ["shape_statement", "scratch_extension"],
     });
   },

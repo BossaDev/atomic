@@ -44,6 +44,7 @@ Blockly.Blocks["uniswap_v2_flashswap"] = {
       // }],
       // "nextStatement": null,
       category: Blockly.Categories.control,
+      tooltip: "Uniswap V2 flashswap block: Include blocks inside this one, they are the actions while you have the loan in hands. Make sure you have enough to repay (including the 0.03% fee) by the end of the internal transaction (repayment is automatic). After repaying the execution will follow to the block below it.",
       colour: "#ff007b",
       extensions: ["shape_statement"],
     });

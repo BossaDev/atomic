@@ -17,6 +17,7 @@ Blockly.Blocks["atomic_transaction"] = {
         },
       ],
       category: Blockly.Categories.event,
+      tooltip: "Atomic transaction start block: Use this block to start a transaction (or any of similar shape).",
       extensions: ["colours_event", "shape_hat"],
     });
   },

@@ -25,6 +25,7 @@ const compound_supply = {
       ],
       colour: "#070a0e",
       category: Blockly.Categories.more,
+      tooltip: "Compound Supply: Supply liquidity on Compound.",
       extensions: ["shape_statement", "scratch_extension"],
     });
   },

@@ -29,6 +29,7 @@ Blockly.Blocks["uniswap_v2_swap"] = {
       ],
       category: Blockly.Categories.pen,
       colour: "#ff007b",
+      tooltip: "Uniswap V2 Swap: Swap eth/tokens in Uniswap V2.",
       extensions: ["shape_statement", "scratch_extension"],
     });
   },

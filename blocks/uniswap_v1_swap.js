@@ -28,6 +28,7 @@ Blockly.Blocks["uniswap_v1_swap"] = {
           },
         ],
         category: Blockly.Categories.pen,
+        tooltip: "Uniswap V1 Swap: Swap eth/tokens in Uniswap V1.",
         extensions: ["colours_more", "shape_statement", "scratch_extension"],
       });
     },
