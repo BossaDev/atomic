@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@studydefi/money-legos": "^2.1.0",
+    "@uniswap/v2-core": "^1.0.1",
     "ethers": "^4.0.47",
     "exports-loader": "0.6.3",
     "imports-loader": "0.6.5"

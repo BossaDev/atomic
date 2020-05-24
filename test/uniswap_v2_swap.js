@@ -202,7 +202,7 @@ let encoder = async function (value, tokenFrom, tokenTo) {
             swapCalldata = uniswapRouterInterface.functions.swapExactTokensForTokens.encode([
                 ethers.utils.parseEther(value).toString(),// amount in
                 "1", // minimum amount, todo: slippage protection
-                [tokenFrom, "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2", tokenTo], // path
+                [tokenFrom, tokenTo], // path
                 atomicProxyAddress, // recipient of output tokens
                 Math.floor(Date.now() / 1000) + 9000 // deadline
             ])
