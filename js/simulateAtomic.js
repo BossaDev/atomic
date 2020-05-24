@@ -12,16 +12,24 @@ const simulateAtomic = async (blocks) => {
 
 }
 
-const simulationCall = async function (value, gas, calldata) {
+const simulationCall = async function (value, gas, paramObj) {
     const defaultProvider = ethers.getDefaultProvider("homestead")
-    let encoder = new ethers.utils.AbiCoder();
 
-    let factory = new ethers.ContractFactory(atomicAbi, atomicBytecode);
-    let deployTx = await factory.getDeployTransaction(calldata, {
+    // let factory = new ethers.ContractFactory(atomicAbi, atomicBytecode);
+    let atomic = new ethers.utils.Interface(atomicAbi)
+    console.log("test", paramObj)
+    let calldata = atomic.functions.execute.encode([paramObj.adds, paramObj.values, paramObj.datas])
+
+    let transaction = {
+        to: atomicAddress,
         value: ethers.utils.parseEther(value).toHexString(),
-    })
+        data: calldata,
+    }
 
-    let tx = await defaultProvider.call(deployTx)
+    console.log(transaction)
+
+
+    let tx = await defaultProvider.call(transaction)
 
     if (tx == "0x") // failed
         alert("Your transaction is failing, check if all the blocks have enough balance to perform their operations.")
