@@ -38,6 +38,7 @@ for (let [key, value] of Object.entries(Blockly.Blocks)) {
 
 Blockly.Blocks.defaultToolbox += '</category>' + '</xml>';
 
+
 // Context menus
 Blockly.Msg.DUPLICATE = 'Duplicate';
 Blockly.Msg.DELETE = 'Delete';

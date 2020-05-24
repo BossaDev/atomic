@@ -75,6 +75,14 @@ const launchAtomic = async (blocks) => {
     sendAtomicTx(...txParameters)
 }
 
+const mergeTxObjs = function (first, second) {
+    return {
+        adds: first.adds.concat(second.adds),
+        values: first.values.concat(second.values),
+        datas: first.datas.concat(second.datas)
+    }
+}
+
 // launches from a specific block, all validation should be performed before
 // this function must receive a hat block (non transactional) and will encode all 
 // subsequent blocks, and send out the transaction for signature in the browser
@@ -83,10 +91,14 @@ const getTxParameters = async (block) => {
 
     let gas = (block.FIELD) ? await getNestedValue(block.FIELD[0]) : "M" // H/M/L, will use ethgasstation recommended values + 1 wei
     let value = (block.VALUE) ? await getNestedValue(block.VALUE[0]) : "0"
-    let calldata = "0x"
+    let calldata = {
+        adds: [],
+        values: [],
+        datas: []
+    }
 
     try {
-        calldata += await encodePayload(block.NEXT)
+        calldata = mergeTxObjs(calldata, await encodePayload(block.NEXT))
         return [value, gas, calldata]
     } catch (error) {
         alert("\nError encoding for transaction: \n\n" + error.message)
@@ -132,26 +144,43 @@ const encodePayload = async (block) => {
     let encoded = await Blockly.Blocks[blockData.attributes.type.value].encoder(...values)
     let nextBlocks = (blockData.NEXT) ? await encodePayload(blockData.NEXT) : ""
 
-    return encoded + nextBlocks
+    return mergeTxObjs(encoded, nextBlocks) // encoded + nextBlocks
 }
 
 const sendAtomicTx = async function (value, gas, calldata) {
     try {
-        await ethereum.enable()
-        const provider = new ethers.providers.Web3Provider(web3.currentProvider);
+
+        // Standard metamask connect
+        // await ethereum.enable()
+        // const provider = new ethers.providers.Web3Provider(web3.currentProvider);
+
+
+        // Portis connect
+        const portis = new Portis("55e757b6-7fdb-4db2-a625-4d5e93bc29ae", "mainnet");
+        const provider = new ethers.providers.Web3Provider(portis.provider);
+
+        (async () => {
+            const accounts = await provider.listAccounts();
+            const balance = await provider.getBalance(accounts[0]);
+            const etherString = ethers.utils.formatEther(balance);
+            const networkName = provider.network.name;
+            document.getElementById("walletMsg").innerHTML = `
+            ${accounts[0]}`;
+        })();
 
         // There is only ever up to one account in MetaMask exposed
         const signer = provider.getSigner();
-        let factory = new ethers.ContractFactory(atomicAbi, atomicBytecode, signer);
+        // let factory = new ethers.ContractFactory(atomicAbi, atomicBytecode, signer);
 
-        let contract = await factory.deploy(calldata, {
-            value: ethers.utils.parseEther(value).toHexString(),
-            gasPrice: 10, // todo: dynamic gas price
-            gasLimit: 10000000
-        });
+        // let contract = await factory.deploy(calldata, {
+        //     value: ethers.utils.parseEther(value).toHexString(),
+        //     gasPrice: 10, // todo: dynamic gas price
+        //     gasLimit: 10000000
+        // });
 
-        console.log("Deployed at", contract.address);
+        // console.log("Deployed at", contract.address);
     } catch (error) {
-        alert("\nError sending transaction: \n\n" + error.message + "\n\nEnsure you are using an Ethereum compatible browser, and approve theh request to connect.")
+        console.error(error)
+        alert("\nError sending transaction: \n\n" + error.message + "\n\nEnsure you are using an Ethereum compatible browser, and approve the request to connect.")
     }
 }
