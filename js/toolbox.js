@@ -36,6 +36,7 @@ for (let [key, value] of Object.entries(Blockly.Blocks)) {
   if (value.template) Blockly.Blocks.defaultToolbox += value.template
 }
 
+Blockly.Blocks.defaultToolbox += '<block></block>'
 Blockly.Blocks.defaultToolbox += '</category>' + '</xml>';
 
 
