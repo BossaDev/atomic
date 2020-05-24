@@ -12,8 +12,7 @@ Blockly.Blocks["aave_flashloan"] = {
       message1: "%1", // Recheio
       // "message2": "%1", // Icon
       lastDummyAlign2: "RIGHT",
-      args0: [
-        {
+      args0: [{
           type: "field_image",
           src: "./media/aaveghost.svg",
           width: 40,
@@ -31,12 +30,10 @@ Blockly.Blocks["aave_flashloan"] = {
           name: "TOKEN",
         },
       ],
-      args1: [
-        {
-          type: "input_statement",
-          name: "SUBSTACK",
-        },
-      ],
+      args1: [{
+        type: "input_statement",
+        name: "SUBSTACK",
+      }, ],
       // "args2": [{
       //   "type": "field_image",
       //   "src": Blockly.mainWorkspace.options.pathToMedia + "repeat.svg",
@@ -48,78 +45,104 @@ Blockly.Blocks["aave_flashloan"] = {
       // "nextStatement": null,
       category: Blockly.Categories.control,
       colour: "#B6509E",
+      tooltip: "Aave flashloan block: Include blocks inside this one, they are the actions while you have the loan in hands. Make sure you have enough to repay (including the 0.09% fee) by the end of the internal transaction (repayment is automatic).",
       extensions: ["shape_statement"],
     });
   },
-  encoder: function (token, value, substack) {
+  category: "Aave",
+  encoder: function (value, token, substack) {
+    let val = ethers.utils.bigNumberify(value)
     const aave_core = "0x3dfd23A6c5E8BbcFc9581d2E864a68feb6a076d3";
     const eth_token = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
-    const loanerAdd = "0xdeployedContract";
-    const loanerABI = [
-      {
-        constant: false,
-        inputs: [
-          {
-            internalType: "address",
-            name: "assetToFlashLoan",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "amountToLoan",
-            type: "uint256",
-          },
-          {
-            internalType: "bytes",
-            name: "_params",
-            type: "bytes",
-          },
-        ],
-        name: "initateFlashLoan",
-        outputs: [],
-        payable: false,
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-    ];
+    const loanerAdd = "0xf4c98155ba397d6148f8d9514f0772f7be18bf9d";
+    const loanerABI = [{
+      constant: false,
+      inputs: [{
+          internalType: "address",
+          name: "assetToFlashLoan",
+          type: "address",
+        },
+        {
+          internalType: "uint256",
+          name: "amountToLoan",
+          type: "uint256",
+        },
+        {
+          internalType: "bytes",
+          name: "_params",
+          type: "bytes",
+        },
+      ],
+      name: "initateFlashLoan",
+      outputs: [],
+      payable: false,
+      stateMutability: "nonpayable",
+      type: "function",
+    }, ];
 
-    if (loanerAdd == undefined) {
-      loanerAdd = "0xdeployedContract";
-    }
+    // if (loanerAdd == undefined) {
+    //   loanerAdd = "0xdeployedContract";
+    // }
+
+    let erc20TransferAbi = [{
+      "constant": false,
+      "inputs": [{
+          "internalType": "address",
+          "name": "dst",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "wad",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer",
+      "outputs": [{
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }]
 
     //Encode call to return funds
-    let erc20Interface = new ethers.utils.Interface(legos.erc20.abi);
-    let fee = value.mul(ethers.utils.bigNumberify("9")).div("10000");
+    let erc20Interface = new ethers.utils.Interface(erc20TransferAbi);
+    console.log(typeof val, val)
+    let fee = ethers.utils.bigNumberify(val).mul(ethers.utils.bigNumberify("9")).div("10000");
 
     if (token == eth_token) {
       substack.adds.push(aave_core);
-      substack.weiValues.push(value.add(fee));
+      substack.values.push(val.add(fee));
       substack.datas.push("0x0");
     } else {
       substack.adds.push(token);
-      substack.weiValues.push("0");
+      substack.values.push("0");
       let token_transfer = erc20Interface.functions.transfer.encode([
         aave_core,
-        value.add(fee),
+        val.add(fee),
       ]);
       substack.datas.push(token_transfer);
     }
 
-    let poolReturn = encodeForAtomic(
-      substack.adds,
-      substack.weiValues,
-      substack.datas
-    );
+    let inter = new ethers.utils.Interface(atomicAbi);
+    let poolReturn = inter.functions.execute.encode([substack.adds, substack.values, substack.datas])
 
     let loanerInterface = new ethers.utils.Interface(loanerABI);
     // Encode call to Loaner Contract
     let loanerData = loanerInterface.functions.initateFlashLoan.encode([
       token,
       value,
-      "0x" + poolReturn,
+      poolReturn,
     ]);
 
-    return { adds: [loanerAdd], values: ["0"], datas: [loanerData] };
+    return {
+      adds: [loanerAdd],
+      values: ["0"],
+      datas: [loanerData]
+    };
   },
   template: function () {
     return (
@@ -144,17 +167,15 @@ Blockly.Blocks["aave_token_list"] = {
   init: function () {
     this.jsonInit({
       message0: "%1",
-      args0: [
-        {
-          type: "field_dropdown",
-          name: "TOKEN",
-          options: [
-            ["ETH", "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"],
-            // ["DAI", "0x6b175474e89094c44da98b954eedeac495271d0f"],
-            // ["BAT", "0x0d8775f648430679a709e98d2b0cb6250d2887ef"],
-          ],
-        },
-      ],
+      args0: [{
+        type: "field_dropdown",
+        name: "TOKEN",
+        options: [
+          ["ETH", "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"],
+          // ["DAI", "0x6b175474e89094c44da98b954eedeac495271d0f"],
+          // ["BAT", "0x0d8775f648430679a709e98d2b0cb6250d2887ef"],
+        ],
+      }, ],
       colour: "#B6509E",
       extensions: ["output_string"],
     });
