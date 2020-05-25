@@ -45,6 +45,16 @@
   <script>
     'use strict';
 
+    var loc = window.location.href + '';
+    if (loc.indexOf('http://') == 0 &&
+      !(loc.indexOf('http://localhost:8000/') == 0 ||
+        loc.indexOf('http://0.0.0.0:8000/') == 0 ||
+        loc.indexOf('file:///') == 0)
+    ) {
+      console.log("Redirecting to SSL connection.")
+      window.location.href = loc.replace('http://', 'https://');
+    }
+
     var workspace = null;
 
     function start() {
@@ -115,7 +125,9 @@
 </head>
 
 <body onload="start()">
-  <div id="portis" style="position: relative; top: 10px; z-index: 11000; float: right;"><img src="https://www.portis.io/static/logo-small.svg" style="position: relative; top: 5px;" width="25" height="25">&nbsp;<span id="walletMsg">Not Connected</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+  <div id="portis" style="position: relative; top: 10px; z-index: 11000; float: right;"><img
+      src="https://www.portis.io/static/logo-small.svg" style="position: relative; top: 5px;" width="25"
+      height="25">&nbsp;<span id="walletMsg">Not Connected</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
   <div id="blocklyDiv"></div>
 </body>
 
