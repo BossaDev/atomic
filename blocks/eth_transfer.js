@@ -33,9 +33,6 @@ const eth_transfer = {
     });
   },
   encoder: function (value, unit, to) {
-    // encoding for atomic
-    let encoder = new ethers.utils.AbiCoder();
-    let types = ["address", "uint256", "bytes"]; // to, value, data
 
     return {
       adds: [to],
