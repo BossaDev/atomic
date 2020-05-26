@@ -30,7 +30,7 @@ Blockly.Blocks["balance_swap"] = {
         },
       ],
       category: Blockly.Categories.pen,
-      tooltip: "Balance Swap: Use to swap eth/tokens on Balance.",
+      tooltip: "Balancer Swap: Use to swap eth/tokens on Balancer.",
       colour: "#bebebe",
       extensions: ["shape_statement", "scratch_extension"],
     });
