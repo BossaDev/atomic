@@ -6,9 +6,11 @@ Blockly.Blocks["atomic_transaction"] = {
   init: function () {
     this.jsonInit({
       message0: "%1 %2 transaction",
-      args0: [{
+      args0: [
+        {
           type: "field_image",
-          src: "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojidex/112/atom-symbol_269b.png",
+          src:
+            "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojidex/112/atom-symbol_269b.png",
           width: 40,
           height: 40,
         },
@@ -17,13 +19,17 @@ Blockly.Blocks["atomic_transaction"] = {
         },
       ],
       category: Blockly.Categories.event,
-      tooltip: "Atomic transaction start block: Use this block to start a transaction (or any of similar shape).",
+      tooltip:
+        "Atomic transaction start block: Use this block to start a transaction (or any of similar shape).",
       extensions: ["colours_event", "shape_hat"],
     });
   },
+  category: "Atomic",
   template: function () {
-    return "" +
+    return (
+      "" +
       '<block type="atomic_transaction" id="atomic_transaction">' +
-      '</block>'
-  }
+      "</block>"
+    );
+  },
 };

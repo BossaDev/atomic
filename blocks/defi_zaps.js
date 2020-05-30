@@ -26,10 +26,12 @@ const defi_zaps = {
       ],
       colour: "#660000",
       category: Blockly.Categories.more,
-      tooltip: "Defi Zaps: Choose one Zap on the dropdown and the value to supply liquidity to Uniswap pools and more.",
+      tooltip:
+        "Defi Zaps: Choose one Zap on the dropdown and the value to supply liquidity to Uniswap pools and more.",
       extensions: ["shape_statement", "scratch_extension"],
     });
   },
+  category: "DeFi Zaps",
   encoder: function (value, to) {
     // encoding for atomic
     let encoder = new ethers.utils.AbiCoder();

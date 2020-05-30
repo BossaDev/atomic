@@ -25,6 +25,7 @@ Blockly.Blocks["revert"] = {
       extensions: ["shape_end"],
     });
   },
+  category: "Atomic",
   encoder: function () {
     return {
       adds: ["0x0"],
