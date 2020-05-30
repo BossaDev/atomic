@@ -11,7 +11,7 @@ const eth_transfer = {
           src:
             "https://www.nicepng.com/png/full/152-1525867_ethereum-triangle.png",
           width: 40,
-          height: 40,
+          height: 35,
         },
         {
           type: "field_vertical_separator",
