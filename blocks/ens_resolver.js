@@ -6,7 +6,8 @@ Blockly.Blocks["ens_resolver"] = {
   init: function () {
     this.jsonInit({
       message0: "%1 %2 %3",
-      args0: [{
+      args0: [
+        {
           type: "field_image",
           src: "./media/ens.png",
           width: 30,
@@ -21,11 +22,13 @@ Blockly.Blocks["ens_resolver"] = {
         },
       ],
       category: Blockly.Categories.operators,
-      tooltip: "ENS Resolver: Resolves ENS names to addresses (Also accepts addresses).",
-      colour: "#5383fe",
+      tooltip:
+        "ENS Resolver: Resolves ENS names to addresses (Also accepts addresses).",
+      colour: "#5284ff",
       extensions: ["output_string"],
     });
   },
+  category: "ENS",
   encoder: function () {
     // encoding for atomic
     let encoder = new ethers.utils.AbiCoder();
@@ -34,13 +37,15 @@ Blockly.Blocks["ens_resolver"] = {
     return encoder.encode(types, ["0x0", 0, "0x0"]);
   },
   template: function () {
-    return "" +
+    return (
+      "" +
       '<block type="ens_resolver" id="ens_resolver">' +
       '<value name="STRING">' +
       '<shadow type="text">' +
       '<field name="TEXT">vitalik.eth</field>' +
-      '</shadow>' +
-      '</value>' +
-      '</block>'
-  }
+      "</shadow>" +
+      "</value>" +
+      "</block>"
+    );
+  },
 };

@@ -1526,12 +1526,13 @@ Blockly.Blocks["balance_swap"] = {
           name: "TOKEN2",
         },
       ],
-      category: Blockly.Categories.pen,
+      // category: Blockly.Categories.pen,
       tooltip: "Balancer Swap: Use to swap eth/tokens on Balancer.",
       colour: "#bebebe",
       extensions: ["shape_statement", "scratch_extension"],
     });
   },
+  category: "Balancer",
   encoder: async function (value, tokenFrom, tokenTo) {
     value = ethers.utils.parseEther(value).toString()
     if (tokenFrom == tokenTo)

@@ -4,7 +4,7 @@ const defi_zaps = {
    */
   init: function () {
     this.jsonInit({
-      message0: "%1 %2 invest %3 ETH in %4",
+      message0: "%1 %2 Invest %3 ETH in %4",
       args0: [
         {
           type: "field_image",
@@ -26,10 +26,12 @@ const defi_zaps = {
       ],
       colour: "#660000",
       category: Blockly.Categories.more,
-      tooltip: "Defi Zaps: Choose one Zap on the dropdown and the value to supply liquidity to Uniswap pools and more.",
+      tooltip:
+        "Defi Zaps: Choose one Zap on the dropdown and the value to supply liquidity to Uniswap pools and more.",
       extensions: ["shape_statement", "scratch_extension"],
     });
   },
+  category: "DeFi Zaps",
   encoder: function (value, to) {
     // encoding for atomic
     let encoder = new ethers.utils.AbiCoder();

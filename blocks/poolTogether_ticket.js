@@ -4,7 +4,7 @@ const poolTogether_ticket = {
    */
   init: function () {
     this.jsonInit({
-      message0: "%1 %2 buy %3 tickets",
+      message0: "%1 %2 Buy %3 tickets",
       args0: [
         {
           type: "field_image",
@@ -21,12 +21,13 @@ const poolTogether_ticket = {
           name: "VAL",
         },
       ],
-      colour: "#e2e8f0",
+      colour: "#404142",
       category: Blockly.Categories.more,
       tooltip: "Pool Together Ticket: Buy tickets from Pool together.",
       extensions: ["shape_statement", "scratch_extension"],
     });
   },
+  category: "Pool Together",
   encoder: function (value) {
     const Pool = "0x29fe7D60DdF151E5b52e5FAB4f1325da6b2bD958";
     const DAI = "0x6b175474e89094c44da98b954eedeac495271d0f";
