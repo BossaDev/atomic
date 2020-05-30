@@ -173,7 +173,7 @@ Blockly.Blocks["uniswap_v1_swap"] = {
         let calldata = uniswapExchangeInterface.functions.ethToTokenSwapInput.encode(["2", deadline])
         return {
             adds: [exchange],
-            values: [ethers.utils.parseEther(value)],
+            values: [ethers.utils.parseEther(value).toString()],
             datas: [calldata]
         }
   

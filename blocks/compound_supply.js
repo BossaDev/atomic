@@ -43,6 +43,7 @@ const compound_supply = {
     let tkAddress;
     let tkData;
     let tkValue;
+    console.log(token)
     if (token == "ETH") {
       tkAddress = cETH;
       let tkAbi = [{
@@ -120,7 +121,7 @@ Blockly.Blocks["compound-unit-list"] = {
         type: "field_dropdown",
         name: "UNIT",
         options: [
-          ["ETH", "ETHER"],
+          ["ETH", "ETH"],
           ["DAI", "DAI"],
         ],
       }, ],

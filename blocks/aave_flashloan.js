@@ -51,7 +51,13 @@ Blockly.Blocks["aave_flashloan"] = {
   },
   category: "Aave",
   encoder: function (value, token, substack) {
-    let val = ethers.utils.bigNumberify(value)
+    if (!substack) substack = {
+      adds: [],
+      values: [],
+      datas: []
+    }
+
+    let val = ethers.utils.bigNumberify(ethers.utils.parseEther(value))
     const aave_core = "0x3dfd23A6c5E8BbcFc9581d2E864a68feb6a076d3";
     const eth_token = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
     const loanerAdd = "0xf4c98155ba397d6148f8d9514f0772f7be18bf9d";
@@ -110,8 +116,7 @@ Blockly.Blocks["aave_flashloan"] = {
 
     //Encode call to return funds
     let erc20Interface = new ethers.utils.Interface(erc20TransferAbi);
-    console.log(typeof val, val)
-    let fee = ethers.utils.bigNumberify(val).mul(ethers.utils.bigNumberify("9")).div("10000");
+    let fee = val.mul(ethers.utils.bigNumberify("9")).div("10000")
 
     if (token == eth_token) {
       substack.adds.push(aave_core);
@@ -122,7 +127,7 @@ Blockly.Blocks["aave_flashloan"] = {
       substack.values.push("0");
       let token_transfer = erc20Interface.functions.transfer.encode([
         aave_core,
-        val.add(fee),
+        val.add(fee)
       ]);
       substack.datas.push(token_transfer);
     }
@@ -134,7 +139,7 @@ Blockly.Blocks["aave_flashloan"] = {
     // Encode call to Loaner Contract
     let loanerData = loanerInterface.functions.initateFlashLoan.encode([
       token,
-      value,
+      ethers.utils.parseEther(value),
       poolReturn,
     ]);
 

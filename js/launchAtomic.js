@@ -196,11 +196,14 @@ const launchAtomic = async (blocks) => {
 }
 
 const mergeTxObjs = function (first, second) {
-    return {
-        adds: first.adds.concat(second.adds),
-        values: first.values.concat(second.values),
-        datas: first.datas.concat(second.datas)
-    }
+    if (!first) return second;
+    else if (!second) return first;
+    else
+        return {
+            adds: first.adds.concat(second.adds),
+            values: first.values.concat(second.values),
+            datas: first.datas.concat(second.datas)
+        }
 }
 
 // launches from a specific block, all validation should be performed before

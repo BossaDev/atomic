@@ -1,3 +1,153 @@
+const getMainnetAtomic = (provider) => {
+  let atomicContract = new ethers.Contract(atomicAddress, atomicAbi, provider);
+  return atomicContract
+}
+
+const getUserAddress = () => {
+  return "0xDA8322AEa6C4Eb8C7E2E86EF89FADCf82445172E" // testing user, first address of the mnemonic set on ganache.
+}
+
+const uniswapRouterAddress = "0xf164fC0Ec4E93095b804a4795bBe1e041497b92a"
+const uniswapRouterAbi = [{
+    inputs: [],
+    name: "WETH",
+    outputs: [{
+      internalType: "address",
+      name: "",
+      type: "address"
+    }],
+    stateMutability: "pure",
+    type: "function"
+  },
+  {
+    inputs: [{
+        internalType: "uint256",
+        name: "amountOutMin",
+        type: "uint256"
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]"
+      },
+      {
+        internalType: "address",
+        name: "to",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256"
+      }
+    ],
+    name: "swapExactETHForTokens",
+    outputs: [{
+      internalType: "uint256[]",
+      name: "amounts",
+      type: "uint256[]"
+    }],
+    stateMutability: "payable",
+    type: "function"
+  },
+  {
+    inputs: [{
+        internalType: "uint256",
+        name: "amountIn",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "amountOutMin",
+        type: "uint256"
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]"
+      },
+      {
+        internalType: "address",
+        name: "to",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256"
+      }
+    ],
+    name: "swapExactTokensForETH",
+    outputs: [{
+      internalType: "uint256[]",
+      name: "amounts",
+      type: "uint256[]"
+    }],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [{
+        internalType: "uint256",
+        name: "amountIn",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "amountOutMin",
+        type: "uint256"
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]"
+      },
+      {
+        internalType: "address",
+        name: "to",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256"
+      }
+    ],
+    name: "swapExactTokensForTokens",
+    outputs: [{
+      internalType: "uint256[]",
+      name: "amounts",
+      type: "uint256[]"
+    }],
+    stateMutability: "nonpayable",
+    type: "function"
+  }
+]
+
+const ERC20approveAbi = [{
+  "constant": false,
+  "inputs": [{
+      "internalType": "address",
+      "name": "usr",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "wad",
+      "type": "uint256"
+    }
+  ],
+  "name": "approve",
+  "outputs": [{
+    "internalType": "bool",
+    "name": "",
+    "type": "bool"
+  }],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+}]
+
 Blockly.Blocks["uniswap_v2_swap"] = {
   /**
    * @this Blockly.Block
@@ -39,147 +189,6 @@ Blockly.Blocks["uniswap_v2_swap"] = {
       return
     }
 
-    const uniswapRouterAddress = "0xf164fC0Ec4E93095b804a4795bBe1e041497b92a"
-    const uniswapRouterAbi = [{
-        inputs: [],
-        name: "WETH",
-        outputs: [{
-          internalType: "address",
-          name: "",
-          type: "address"
-        }],
-        stateMutability: "pure",
-        type: "function"
-      },
-      {
-        inputs: [{
-            internalType: "uint256",
-            name: "amountOutMin",
-            type: "uint256"
-          },
-          {
-            internalType: "address[]",
-            name: "path",
-            type: "address[]"
-          },
-          {
-            internalType: "address",
-            name: "to",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "deadline",
-            type: "uint256"
-          }
-        ],
-        name: "swapExactETHForTokens",
-        outputs: [{
-          internalType: "uint256[]",
-          name: "amounts",
-          type: "uint256[]"
-        }],
-        stateMutability: "payable",
-        type: "function"
-      },
-      {
-        inputs: [{
-            internalType: "uint256",
-            name: "amountIn",
-            type: "uint256"
-          },
-          {
-            internalType: "uint256",
-            name: "amountOutMin",
-            type: "uint256"
-          },
-          {
-            internalType: "address[]",
-            name: "path",
-            type: "address[]"
-          },
-          {
-            internalType: "address",
-            name: "to",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "deadline",
-            type: "uint256"
-          }
-        ],
-        name: "swapExactTokensForETH",
-        outputs: [{
-          internalType: "uint256[]",
-          name: "amounts",
-          type: "uint256[]"
-        }],
-        stateMutability: "nonpayable",
-        type: "function"
-      },
-      {
-        inputs: [{
-            internalType: "uint256",
-            name: "amountIn",
-            type: "uint256"
-          },
-          {
-            internalType: "uint256",
-            name: "amountOutMin",
-            type: "uint256"
-          },
-          {
-            internalType: "address[]",
-            name: "path",
-            type: "address[]"
-          },
-          {
-            internalType: "address",
-            name: "to",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "deadline",
-            type: "uint256"
-          }
-        ],
-        name: "swapExactTokensForTokens",
-        outputs: [{
-          internalType: "uint256[]",
-          name: "amounts",
-          type: "uint256[]"
-        }],
-        stateMutability: "nonpayable",
-        type: "function"
-      }
-    ]
-
-    let ERC20approveAbi = [{
-      "constant": false,
-      "inputs": [{
-          "internalType": "address",
-          "name": "usr",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "wad",
-          "type": "uint256"
-        }
-      ],
-      "name": "approve",
-      "outputs": [{
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }]
-
     let erc20Interface = new ethers.utils.Interface(ERC20approveAbi)
     let uniswapRouterInterface = new ethers.utils.Interface(uniswapRouterAbi)
 
@@ -220,7 +229,7 @@ Blockly.Blocks["uniswap_v2_swap"] = {
         swapCalldata = uniswapRouterInterface.functions.swapExactTokensForTokens.encode([
           ethers.utils.parseEther(value).toString(), // amount in
           "1", // minimum amount, todo: slippage protection
-          [tokenFrom, "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2", tokenTo], // path
+          [tokenFrom, tokenTo], // path
           atomicProxyAddress, // recipient of output tokens
           Math.floor(Date.now() / 1000) + 9000 // deadline
         ])

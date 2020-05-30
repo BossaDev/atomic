@@ -39,7 +39,7 @@ const loanerABI = [{
 const encoder = async (value, token, substack, loanerAdd) => {
 
     if (loanerAdd == undefined) {
-        loanerAdd = "0xdeployedContract";
+        loanerAdd = "0x383413961e9afdf3028d073f240807944d16d953";
     }
 
     //Encode call to return funds
