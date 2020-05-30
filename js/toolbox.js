@@ -27,17 +27,54 @@ goog.require("Blockly.Blocks");
 /**
  * @fileoverview Provide a default toolbox XML.
  */
+let categories = {};
+for (let [key, value] of Object.entries(Blockly.Blocks)) {
+  if (value.template && value.category)
+    categories[value.category] += value.template;
+}
+let cats = "";
+
+cats +=
+  '<category name="Atomic" iconURI="./media/atomic-ninja-icon.png">' +
+  categories["Atomic"] +
+  "</category>";
+
+cats +=
+  '<category name="Uniswap" iconURI="https://uniswap.exchange/static/media/logo_white.edb44e56.svg" >' +
+  categories["Uniswap"] +
+  "</category>";
+
+cats +=
+  '<category name="Aave" iconURI="./media/aaveghost.svg">' +
+  categories["Aave"] +
+  "</category>";
+
+cats +=
+  '<category name="Compound" iconURI="https://compound.finance/images/compound-mark.svg">' +
+  categories["Compound Finance"] +
+  "</category>";
+
+cats +=
+  '<category name="Defi Zaps" iconURI="https://defizap.com/static/media/save-gas.81e35b11.svg">' +
+  categories["DeFi Zaps"] +
+  "</category>";
+
+cats +=
+  '<category name="Balancer" iconURI="https://gblobscdn.gitbook.com/spaces%2F-LtMQYB90ZuO38aKDyto%2Favatar.png">' +
+  categories["Balancer"] +
+  "</category>";
+
+cats +=
+  '<category name="PoolTogether" iconURI="https://www.pooltogether.com/_next/static/images/pool-together--purple-wordmark-8040268169fe12bd47b82655dc0923ce.svg">' +
+  categories["Pool Together"] +
+  "</category>";
+cats +=
+  '<category name="ENS" iconURI="./media/ens.png" showStatusButton="false">' +
+  categories["ENS"] +
+  "</category>";
 
 Blockly.Blocks.defaultToolbox =
-  '<xml id="toolbox-categories" style="display: none">' +
-  '<category name="ATOMIC" id="erc20" colour="#FF6680" secondaryColour="#FF4D6A" ' +
-  'iconURI="./media/atomic-ninja-icon.png" showStatusButton="true">';
-
-for (let [key, value] of Object.entries(Blockly.Blocks)) {
-  if (value.template) Blockly.Blocks.defaultToolbox += value.template;
-}
-
-Blockly.Blocks.defaultToolbox += "</category>" + "</xml>";
+  '<xml id="toolbox-categories" style="display: none">' + cats + "</xml>";
 
 // Context menus
 Blockly.Msg.DUPLICATE = "Duplicate";

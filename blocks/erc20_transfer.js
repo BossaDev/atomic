@@ -29,7 +29,7 @@ Blockly.Blocks["erc20_transfer"] = {
           name: "TO",
         },
       ],
-      category: Blockly.Categories.more,
+      //category: Blockly.Categories.more,
       colour: "#7300e6",
       tooltip: "ERC20 Transfer: Transfer any token with this block.",
       extensions: ["shape_statement", "scratch_extension"],
