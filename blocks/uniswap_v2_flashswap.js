@@ -143,10 +143,6 @@ Blockly.Blocks["uniswap_v2_flashswap"] = {
     let val = ethers.utils.bigNumberify(ethers.utils.parseEther(value))
     let fee = val.mul(ethers.utils.bigNumberify("3")).div("1000");
 
-    // 1000 gwei sent in ether, this block will require it to run
-    let valWeth = ethers.utils.bigNumberify("1000")
-    let feeWeth = ethers.utils.bigNumberify("3") //?
-
     // Transfer tokens back to exchange
     substack.adds.push("0x6b175474e89094c44da98b954eedeac495271d0f");
     substack.values.push("0");
