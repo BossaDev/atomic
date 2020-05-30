@@ -60,7 +60,7 @@ Blockly.Blocks["aave_flashloan"] = {
     let val = ethers.utils.bigNumberify(ethers.utils.parseEther(value))
     const aave_core = "0x3dfd23A6c5E8BbcFc9581d2E864a68feb6a076d3";
     const eth_token = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
-    const loanerAdd = "0xf4c98155ba397d6148f8d9514f0772f7be18bf9d";
+    const loanerAdd = "0xa08E96Da1a5622B0dE11E07cf075966d48AF06d5";
     const loanerABI = [{
       constant: false,
       inputs: [{

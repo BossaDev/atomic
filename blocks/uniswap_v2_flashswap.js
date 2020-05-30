@@ -82,7 +82,7 @@ Blockly.Blocks["uniswap_v2_flashswap"] = {
     }
 
     if (loanerAdd == undefined) {
-      loanerAdd = "0x383413961e9afdf3028d073f240807944d16d953";
+      loanerAdd = "0x4f542647588ce6b2659aec3bd512f52c66d6ba7e";
     }
 
     let erc20TransferAbi = [{
@@ -140,8 +140,12 @@ Blockly.Blocks["uniswap_v2_flashswap"] = {
     let uniswapFactory = new ethers.Contract("0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f", uniswapFactoryAbi, provider)
     let exchange = await uniswapFactory.getPair("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", token);
 
-    let val = ethers.utils.bigNumberify(value)
-    let fee = val.mul(ethers.utils.bigNumberify("50")).div("10000");
+    let val = ethers.utils.bigNumberify(ethers.utils.parseEther(value))
+    let fee = val.mul(ethers.utils.bigNumberify("3")).div("1000");
+
+    // 1000 gwei sent in ether, this block will require it to run
+    let valWeth = ethers.utils.bigNumberify("1000")
+    let feeWeth = ethers.utils.bigNumberify("3") //?
 
     // Transfer tokens back to exchange
     substack.adds.push("0x6b175474e89094c44da98b954eedeac495271d0f");
@@ -151,6 +155,12 @@ Blockly.Blocks["uniswap_v2_flashswap"] = {
       val.add(fee),
     ]);
     substack.datas.push(token_transfer);
+
+    // Get Weth
+
+
+    // Transfer WETH back to exchange
+
 
     let inter = new ethers.utils.Interface(atomicAbi);
     let poolReturn = inter.functions.execute.encode([substack.adds, substack.values, substack.datas])
