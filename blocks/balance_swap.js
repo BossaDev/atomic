@@ -4,7 +4,7 @@ Blockly.Blocks["balance_swap"] = {
    */
   init: function () {
     this.jsonInit({
-      message0: "%1 %2 swap %3 %4 for %5",
+      message0: "%1 %2 Swap %3 %4 for %5",
       args0: [
         {
           type: "field_image",
@@ -29,12 +29,13 @@ Blockly.Blocks["balance_swap"] = {
           name: "TOKEN2",
         },
       ],
-      category: Blockly.Categories.pen,
+      // category: Blockly.Categories.pen,
       tooltip: "Balancer Swap: Use to swap eth/tokens on Balancer.",
       colour: "#bebebe",
       extensions: ["shape_statement", "scratch_extension"],
     });
   },
+  category: "Balancer",
   encoder: async function (value, tokenFrom, tokenTo) {},
   template: function () {
     return (

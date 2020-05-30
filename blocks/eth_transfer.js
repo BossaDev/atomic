@@ -4,10 +4,12 @@ const eth_transfer = {
    */
   init: function () {
     this.jsonInit({
-      message0: "%1 %2 send %3 %4 to %5",
-      args0: [{
+      message0: "%1 %2 Send %3 %4 to %5",
+      args0: [
+        {
           type: "field_image",
-          src: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/1200px-Ethereum-icon-purple.svg.png",
+          src:
+            "https://www.nicepng.com/png/full/152-1525867_ethereum-triangle.png",
           width: 40,
           height: 40,
         },
@@ -27,45 +29,47 @@ const eth_transfer = {
           name: "TO",
         },
       ],
+      colour: "#7300e6",
       category: Blockly.Categories.more,
       tooltip: "Send ETH: Transfer ether to the provided address.",
-      extensions: ["colours_control", "shape_statement", "scratch_extension"],
+      extensions: ["shape_statement"],
     });
   },
+  category: "Atomic",
   encoder: function (value, unit, to) {
-
     return {
       adds: [to],
       values: [ethers.utils.parseUnits(value, unit).toString()],
-      datas: ["0x0"]
-    }
+      datas: ["0x0"],
+    };
   },
   template: function () {
-    return "" +
+    return (
+      "" +
       '<block type="eth_transfer" id="eth_transfer">' +
       '<value name="VALUE">' +
       '<shadow type="math_number">' +
       '<field name="NUM">10</field>' +
-      '</shadow>' +
-      '</value>' +
+      "</shadow>" +
+      "</value>" +
       '<value name="UNIT">' +
       '<shadow type="eth-unit-list"></shadow>' +
-      '</value>' +
+      "</value>" +
       '<value name="TO">' +
       '<shadow type="ens_resolver">' +
       '<value name="STRING">' +
       '<shadow type="text">' +
       '<field name="TEXT">vitalik.eth</field>' +
-      '</shadow>' +
-      '</value>' +
-      '</shadow>' +
-      '</value>' +
-      '</block>'
-  }
+      "</shadow>" +
+      "</value>" +
+      "</shadow>" +
+      "</value>" +
+      "</block>"
+    );
+  },
 };
 
-
-Blockly.Blocks["eth_transfer"] = eth_transfer
+Blockly.Blocks["eth_transfer"] = eth_transfer;
 
 Blockly.Blocks["eth-unit-list"] = {
   /**
@@ -74,16 +78,19 @@ Blockly.Blocks["eth-unit-list"] = {
   init: function () {
     this.jsonInit({
       message0: "%1",
-      args0: [{
-        type: "field_dropdown",
-        name: "UNIT",
-        options: [
-          ["WEI", "WEI"],
-          ["GWEI", "GWEI"],
-          ["ETH", "ETHER"],
-        ],
-      }, ],
-      extensions: ["colours_control", "output_string"],
+      args0: [
+        {
+          type: "field_dropdown",
+          name: "UNIT",
+          options: [
+            ["WEI", "WEI"],
+            ["GWEI", "GWEI"],
+            ["ETH", "ETHER"],
+          ],
+        },
+      ],
+      colour: "#4d0099",
+      extensions: ["output_string"],
     });
   },
 };
