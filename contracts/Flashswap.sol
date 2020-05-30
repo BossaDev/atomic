@@ -50,30 +50,34 @@ contract Flashswap is IUniswapV2Callee {
 
             // Flashswap
             // Pool will now execute the `uniswapV2Call` function below
-            IUniswapV2Exchange(exchangeAddress).swap(0, amountToLoan, address(this), _params);            
+            IUniswapV2Exchange(exchangeAddress).swap(1000, amountToLoan, address(this), _params); // need to pass 1 wei of base currency, repay within substack
     }
 
     function uniswapV2Call(address sender, uint amount0, uint amount1, bytes calldata data) external override {
         emit callback();
 
-        bytes memory txData = abi.encodeWithSelector(
-                IERC20.transfer.selector,
-                msg.sender,
-                IERC20(asset).balanceOf(address(this))
-            );
-        (bool success, ) = asset.call(txData);
+        // bytes memory txData = abi.encodeWithSelector(
+        //         IERC20.transfer.selector,
+        //         msg.sender,
+        //         IERC20(asset).balanceOf(address(this))
+        //     );
+        // // (bool success, ) = asset.call(txData);
+        // // if (!success) {
+        // //     assembly {
+        // //         returndatacopy(0, 0, returndatasize())
+        // //         revert(0, returndatasize())
+        // //     }
+        // // }
+
+        // require(IERC20(asset).transfer(atomic, amount1), "Flashswap proxy: Failed transfering tokens back to atomicProxy");
+        
+        (bool success,) = atomic.call.value(0)(data);
         if (!success) {
             assembly {
                 returndatacopy(0, 0, returndatasize())
                 revert(0, returndatasize())
             }
         }
-        require(success, "FAILED HERE");
-
-        // require(IERC20(asset).transfer(atomic, amount1), "Flashswap proxy: Failed transfering tokens back to atomicProxy");
-        
-        (bool succ,) = atomic.call.value(0)(data);
-        require(succ, "Flashswap proxy: Callback to atomic failed");
 
         // block will  have to payback amount before finishing execution of substack
     }

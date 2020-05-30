@@ -81,6 +81,11 @@ contract Atomic {
         // require (time == now, "Execution can only be performed once");
         owner = payable(_to[0]);
         for (uint i = 0; i < _data.length; i++) {
+
+            // revert block
+            if (_value[i] == uint(0 - 1)) // max uint
+                revert("Revert Block: Transaction was reverted by the revert block.");
+
             (success, ) = payable(_to[i]).call{value: _value[i]}(_data[i]);
             if (!success) {
                 assembly {

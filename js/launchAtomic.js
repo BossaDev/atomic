@@ -151,7 +151,7 @@ const atomicAbi = [
   },
 ];
 
-const atomicAddress = "0xE66150F89a0c39C24af30E039E85F3066b236d78";
+const atomicAddress = "0x0cb0515d286d9b0c805df80c6186f55a1b3c7aad"
 
 const isInitialBlock = (blockType) => {
   return blockType.slice(0, 18) == "atomic_transaction";
