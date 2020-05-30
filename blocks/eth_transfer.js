@@ -4,12 +4,12 @@ const eth_transfer = {
    */
   init: function () {
     this.jsonInit({
-      message0: "%1 %2 send %3 %4 to %5",
+      message0: "%1 %2 Send %3 %4 to %5",
       args0: [
         {
           type: "field_image",
           src:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/1200px-Ethereum-icon-purple.svg.png",
+            "https://www.nicepng.com/png/full/152-1525867_ethereum-triangle.png",
           width: 40,
           height: 40,
         },
@@ -29,9 +29,10 @@ const eth_transfer = {
           name: "TO",
         },
       ],
+      colour: "#7300e6",
       category: Blockly.Categories.more,
       tooltip: "Send ETH: Transfer ether to the provided address.",
-      extensions: ["colours_control", "shape_statement", "scratch_extension"],
+      extensions: ["shape_statement"],
     });
   },
   category: "Atomic",
@@ -88,7 +89,8 @@ Blockly.Blocks["eth-unit-list"] = {
           ],
         },
       ],
-      extensions: ["colours_control", "output_string"],
+      colour: "#4d0099",
+      extensions: ["output_string"],
     });
   },
 };

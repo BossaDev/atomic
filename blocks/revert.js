@@ -21,6 +21,7 @@ Blockly.Blocks["revert"] = {
         },
       ],
       //   category: Blockly.Categories.control,
+      colour: "#7300e6",
       tooltip: "Use this block to forcibly revert a transaction",
       extensions: ["shape_end"],
     });

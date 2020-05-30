@@ -24,7 +24,7 @@ Blockly.Blocks["ens_resolver"] = {
       category: Blockly.Categories.operators,
       tooltip:
         "ENS Resolver: Resolves ENS names to addresses (Also accepts addresses).",
-      colour: "#5383fe",
+      colour: "#5284ff",
       extensions: ["output_string"],
     });
   },

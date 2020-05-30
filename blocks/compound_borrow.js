@@ -4,7 +4,7 @@ const compound_borrow = {
    */
   init: function () {
     this.jsonInit({
-      message0: "%1 %2 borrow %3 %4",
+      message0: "%1 %2 Borrow %3 %4",
       args0: [
         {
           type: "field_image",

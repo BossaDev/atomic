@@ -4,7 +4,7 @@ const defi_zaps = {
    */
   init: function () {
     this.jsonInit({
-      message0: "%1 %2 invest %3 ETH in %4",
+      message0: "%1 %2 Invest %3 ETH in %4",
       args0: [
         {
           type: "field_image",

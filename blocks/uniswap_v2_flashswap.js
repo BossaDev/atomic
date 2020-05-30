@@ -34,7 +34,7 @@ Blockly.Blocks["uniswap_v2_flashswap"] = {
     this.jsonInit({
       id: "uniswap_v2_flashswap",
       // "message0": Blockly.Msg.CONTROL_REPEAT,
-      message0: "%1 %2 flashswap %3 %4",
+      message0: "%1 %2 Flashswap %3 %4",
       message1: "%1", // Recheio
       // "message2": "%1", // Icon
       lastDummyAlign2: "RIGHT",

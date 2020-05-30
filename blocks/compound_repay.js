@@ -4,7 +4,7 @@ const compound_repay = {
    */
   init: function () {
     this.jsonInit({
-      message0: "%1 %2 repay %3 %4",
+      message0: "%1 %2 Repay %3 %4",
       args0: [
         {
           type: "field_image",

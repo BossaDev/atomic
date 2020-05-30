@@ -12,7 +12,7 @@ Blockly.Blocks["atomic_transaction"] = {
           src:
             "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojidex/112/atom-symbol_269b.png",
           width: 40,
-          height: 40,
+          height: 30,
         },
         {
           type: "field_vertical_separator",

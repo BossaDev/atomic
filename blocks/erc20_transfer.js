@@ -5,13 +5,13 @@ Blockly.Blocks["erc20_transfer"] = {
 
   init: function () {
     this.jsonInit({
-      message0: "%1 %2 transfer %3 %4 to %5",
+      message0: "%1 %2 Transfer %3 %4 to %5",
       args0: [
         {
           type: "field_image",
           src: "./media/erc20.png",
-          width: 35,
-          height: 35,
+          width: 31,
+          height: 31,
         },
         {
           type: "field_vertical_separator",
@@ -30,7 +30,7 @@ Blockly.Blocks["erc20_transfer"] = {
         },
       ],
       category: Blockly.Categories.more,
-      colour: "#0000FF",
+      colour: "#7300e6",
       tooltip: "ERC20 Transfer: Transfer any token with this block.",
       extensions: ["shape_statement", "scratch_extension"],
     });
@@ -122,7 +122,7 @@ Blockly.Blocks["erc20_token_list"] = {
           ],
         },
       ],
-      colour: "#0000FF",
+      colour: "#4d0099",
       extensions: ["output_string"],
     });
   },
