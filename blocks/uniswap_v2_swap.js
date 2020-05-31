@@ -4,7 +4,8 @@ const getMainnetAtomic = (provider) => {
 };
 
 const getUserAddress = () => {
-  return "0xDA8322AEa6C4Eb8C7E2E86EF89FADCf82445172E"; // testing user, first address of the mnemonic set on ganache.
+  return "0x0000000000000000000000000000000000000000"
+  // return "0xDA8322AEa6C4Eb8C7E2E86EF89FADCf82445172E"; // testing user, first address of the mnemonic set on ganache.
 };
 
 const uniswapRouterAddress = "0xf164fC0Ec4E93095b804a4795bBe1e041497b92a";

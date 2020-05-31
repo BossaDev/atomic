@@ -45,7 +45,7 @@ cats +=
   "</category>";
 
 cats +=
-  '<category name="Aave" id="Aave" iconURI="./media/aaveghost.svg">' +
+  '<category name="Aave" id="Aave" iconURI="https://aave.com/static/media/ghostLogo.2eb73471.svg">' +
   categories["Aave"] +
   "</category>";
 
