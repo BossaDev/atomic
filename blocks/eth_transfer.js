@@ -10,7 +10,7 @@ const eth_transfer = {
           type: "field_image",
           src:
             "https://www.nicepng.com/png/full/152-1525867_ethereum-triangle.png",
-          width: 40,
+          width: 25,
           height: 35,
         },
         {
