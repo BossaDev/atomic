@@ -29,13 +29,8 @@ Blockly.Blocks["revert"] = {
   category: "Atomic",
   encoder: function () {
     return {
-      adds: ["0x0"],
-      values: [
-        ethers.utils
-          .bigNumberify("2")
-          .pow(ethers.utils.bigNumberify("256"))
-          .toString(),
-      ],
+      adds: ["0x0000000000000000000000000000000000000000"],
+      values: [ethers.constants.MaxUint256],
       datas: ["0x0"],
     };
   },
