@@ -6,7 +6,7 @@ contract Bragger {
     uint public maxBrag;
     address public maxBragger;
     event Brag(address bragger, uint balance);
-    
+
     function brag() public {
         emit Brag(msg.sender, address(msg.sender).balance);
         if (address(msg.sender).balance > maxBrag) {
