@@ -327,7 +327,7 @@ const sendAtomicTx = async function (value, gas, calldata) {
     );
     const provider = new ethers.providers.Web3Provider(portis.provider);
 
-    (async () => {
+    await (async () => {
       const accounts = await provider.listAccounts();
       const balance = await provider.getBalance(accounts[0]);
       const etherString = ethers.utils.formatEther(balance);
@@ -338,17 +338,19 @@ const sendAtomicTx = async function (value, gas, calldata) {
 
     // There is only ever up to one account in MetaMask exposed
     const signer = provider.getSigner();
-    // launch the atomic
-    // let factory = new ethers.ContractFactory(atomicAbi, atomicBytecode, signer);
 
-    // let contract = await factory.deploy(calldata, {
-    //     value: ethers.utils.parseEther(value).toHexString(),
-    //     gasPrice: 10, // todo: dynamic gas price
-    //     gasLimit: 10000000
-    // });
-    alert(
-      "☠️ Sending atomic transactions out is currently disabled. This is a pre alpha, hackathon version, please keep your funds away. ☠️"
-    );
+    // launch the atomic tx
+    if (confirm("☠️ Sending atomic transactions out is currently not recommended. This is a pre alpha, hackathon version, please keep your funds away. ☠️ \n\nAre you sure you want to send this transaction out?")) {
+      // lift off!!!
+      const atomic = new ethers.Contract(atomicAddress, atomicAbi, signer)
+
+      tx = await atomic.launchAtomic(calldata.adds, calldata.values, calldata.datas) // no balance will fail this
+      await tx.wait();
+      
+      alert("Atomic Tx mined: ", tx.hash)
+    } else {
+      console.error("User declined to send alpha tx.")
+    }
 
     // console.log("Deployed at", contract.address);
   } catch (error) {
