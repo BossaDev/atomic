@@ -80,7 +80,12 @@
     </table>
 
     <p>The transaction above does not make any sense economically (we would have burned almost 10ETH in fees), we made it with complexity in mind, to try to flex the tool as much as we could.</p>
-    <p>We sent this one out, you can check it on <a href="https://etherscan.io/tx/0x72b7156c60d8a94fa074497c360e20cb96b02d85b45e13a137049fa3a469d38f" target="_blank">Etherscan</a> or with much more detail on <a href="https://dashboard.tenderly.co/tx/main/0x72b7156c60d8a94fa074497c360e20cb96b02d85b45e13a137049fa3a469d38f" target="_blank">Tenderly</a>.</p>
+    <h2>Launch vs. Simulate</h2>
+    <p>Both will pack the transactions the exact same way.</p>
+    <p>When you press simulate, atomic sends an eth_call (the one used to read from smart contracts) to a public node, the return value will tell you if it succeeds. If it fails, we made some EVM hackery to return the revert message from the <i>original</i> revert. This means that you will see a revert message from DAI smart contract for failed transfers. Some contracts of course will not have a message, and then you will see a generic error. Failed ETH transfers also do not give any feedback. We have already nailed how to present to the user the block in which the ninja tx failed, but have yet to implement it.</p>
+    <p>When you press launch, you will be prompted to sign the transaction, and it will be bradcasted by Portis.</p>
+    
+    <p>We sent the above example out, you can check it on <a href="https://etherscan.io/tx/0x72b7156c60d8a94fa074497c360e20cb96b02d85b45e13a137049fa3a469d38f" target="_blank">Etherscan</a> or with much more detail on <a href="https://dashboard.tenderly.co/tx/main/0x72b7156c60d8a94fa074497c360e20cb96b02d85b45e13a137049fa3a469d38f" target="_blank">Tenderly</a>.</p>
     <p>Below are the Etherscan verified contracts the transaction interacted with, also courtesy of Tenderly:</p>
     <img src='./media/tenderlySCs.png' style='width: 100%;'>
 
