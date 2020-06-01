@@ -10,26 +10,29 @@
           height: 100%;
           padding-right: 5%;
           padding-left: 5%;
+          padding-top: 20px;;
           background-color: #f9f9f9;
           font-family: sans-serif;
         }
       </style>
 </head>
 <body>
-    <h1>Atomic Ninja</h1>
-    <p>Atomic is a transaction batcher, that will execute several actions within one <i>atomic</i> transaction.</p>
+    <br>
+    <img src='./media/atomic-ninja-logo.png' style="width: 600px;">
+    <br><br><br><br>
+    <p>Atomic Ninja is a transaction batcher, that will execute several actions within one <i>atomic</i> transaction.</p>
 
     <h2>Motivation</h2>
     <p>Some say that flashloans democratize access to large amounts of capital, but that is not entirely true, until they are useable by the average investor. Nowadays to access the feature one needs deep technical logic, and good coding skills. Atomic will put this and other great tools in the hands of a lot more users.</p>
     <p>This was a hack in the hackathon.money hackathon by ETHGlobal.</p>
 
     <h2>Tech Stack</h2>
-    <p>We started with just one smart contract, that would send one transaction after another on behalf of the user. The atomic functionality is still contained in a single contract, but we also had to develop a proxy contract for all "sandwich" blocks, or blocks that need to handle a callback like flashloans.</p>
+    <p>We started with just one smart contract, that would send one transaction after another on behalf of the user. The atomic functionality is still contained in a single contract, that creates proxies for user using CREATE2 (addresses are unique per user). We also had to develop a proxy contract for all "sandwich" blocks, or blocks that need to handle a callback like flashloans.</p>
     <p>We used Buidler to perform tests, also using a fork from the mainnet in Ganache.</p>
     <p>For the UI we forked scratch-blocks, and tweaked for our needs (removing all blocks provided by the library and adding our own, plus some other small mods). We made those changes with extensibility in mind. Each block lives in a single JS file, the way we envision this in the future is that companies will pull request blocks that use their platforms.</p>
     <p>We also of course used Ethers JS extensively for encoding a bunch of data and any interaction with Web3, and our choice of wallet was Portis.</p>
     <p>Currently there are bocks for ETH transfers, ERC20 Transfers, Uniswap swap (V1 and V2) and flashswap, Aave flashloan, Compound supplying and borrowing, Pooltogether, Defi Zaps, Balancer and an ENS resolver.</p>
-    <p>The dapp is served from IPFS, through the Cloudflare public gateway at https://atomic.ninja</p>
+    <p>The dapp is served from IPFS (pinned on Pinata), and is available at <a href="http://atomicninja.eth.link" target="_blank">atomicninja.eth</a> and <a href="https://atomic.ninja" target="_blank">atomic.ninja</a>.</p>
 
     <h2>Quick Start</h2>
     <p>On the left of the screen there is a list of sorted, disconnected blocks. This is your <b>toolbox</b>.</p>
@@ -43,10 +46,10 @@
     <img src='./media/hatblock.png' style='width: 20%;'>
     <p>Block of this shape are initial blocks. Always start your atomic transaction with one of these. Transaction simulation and launching are blocked if you have more then one of these in the workspace.</p>
     <h3>Sandwitch block</h3>
-    <img src='./media/sandwitchblock.png' style='width: 35%;'>
+    <img src='./media/sandwitchblock.png' style='width: 25%;'>
     <p>These are special blocks that handle a callback. Set the parameters on the block as usual, and include the transaction you want to be performed by the callback inside it. Example: In the flashswap block pictured above, include within it all transactions you want executed during the flashswap (while you have the funds). The block will repay the loan after finishing the transactions (make sure you have funds then, or the transaction will fail). Transactions included after the block will then be executed normally.</p>
     <h3>Linear Block</h3>
-    <img src='./media/linearblock.png' style='width: 40%;'>
+    <img src='./media/linearblock.png' style='width: 30%;'>
     <p>This block is used to identify transactions that are executed in one shot. Most transactions will fall into this bucket, from transfering ETH and ERC20 tokens to Swaping, Borowing, Providing Liquidity and so on.</p>
 
     <h2>Actions</h2>
@@ -55,7 +58,33 @@
     <h3><img src='./media/zoom-launchAtomic.svg'> Launch Atomic Tx</h3>
     <p>Lift off! Use this button to send out your atomic (mainnet only). This is currently disabled as we feel  the tool is not ready to handle funds. Remember, this is hackathon code.</p>
 
-    <br><br>
+    <h2>How it works</h2>
+    <p>When you start a ninja transaction a call is made for the atomic smart contract. It then creates a proxy for the user (using Create2, proxy addresses are unique per user) that then sequentially executes the transactions. Let's look with more detail into an actual transaction:</p>
+    <table>
+      <tr>
+        <td><img src='./media/ninjatx.png'></td>
+        <td>
+          <p><b>Hat Block (Ninja Transaction)</b>: The hat block does not contain any transactions, it is where you set the amount of ether to be sent along with the call.</p>
+          <p><b>Balancer swap block</b>: Here we swap, ETH for DAI. This block actually packs two transactions, a deposit on WETH and then the swap.</p>
+          <p><b>ERC20 transfer</b>: This block packs a transfer of 10 DAI to vitalik.eth.</p>
+          <p><b>Uniswap V2 FlashSwap</b>: This is a sandwitch block, so it works in a particular way. It will call our flashswap proxy, that then will initiate the flashswap. The Uniswap exchange will than call back the proxy, that then sends the transactions packed inside the block back to the User's proxy contract for execution. After it executes all the transactions, it executes an additional transaction, that repays the flashloan.</p>
+          <p><b>Aave Flashloan</b>: Also a sandwitch block, works exactly like the above.</p>
+          <p><b>🤑 Brag</b>: This block will call our brag smart contract, and register your balance at the time of the call.</p>
+          <p><b>Atomic Ninja Tip</b>: It just sends a small amount of ETH to our team (🍻).</p>
+          <p><b>Pool Together</b>: It will send out a transaction to buy 10 tickets.</p>
+          <p>Now both flashloans(swaps) end, they are both repayed (with fees).</p>
+          <p><b>Compound Supply</b>: Supplies .5 ETH liquidity on Compound finance, receive cETH.</p>
+          <p><b>Revert</b>: This block forces a revert, in case you want to trace the transaction but do not want to spend your precious funds.</p>
+        </td>
+      </tr>
+    </table>
+
+    <p>The transaction above does not make any sense economically (we burned almost 10ETH in fees), we made it with complexity in mind, to try to flex the tool as much as we could.</p>
+    <p>We sent this one out, you can check it on <a href="https://etherscan.io/tx/0x72b7156c60d8a94fa074497c360e20cb96b02d85b45e13a137049fa3a469d38f" target="_blank">Etherscan</a> or with much more detail on <a href="https://dashboard.tenderly.co/tx/main/0x72b7156c60d8a94fa074497c360e20cb96b02d85b45e13a137049fa3a469d38f" target="_blank">Tenderly</a>.</p>
+    <p>Below are the Etherscan verified contracts the transaction interacted with, also courtesy of Tenderly:</p>
+    <img src='./media/tenderlySCs.png' style='width: 100%;'>
+
+    <br><br><br><br>
 
 
 </body>

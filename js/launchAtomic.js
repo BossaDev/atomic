@@ -344,6 +344,9 @@ const sendAtomicTx = async function (value, gas, calldata) {
       // lift off!!!
       const atomic = new ethers.Contract(atomicAddress, atomicAbi, signer)
 
+      const unsignedData = atomic.interface.functions["launchAtomic"].encode([calldata.adds, calldata.values, calldata.datas])
+      console.log("unsigned tx data", unsignedData)
+
       tx = await atomic.launchAtomic(calldata.adds, calldata.values, calldata.datas) // no balance will fail this
       await tx.wait();
       
