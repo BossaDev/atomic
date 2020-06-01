@@ -23,7 +23,7 @@ const atomic_tip = {
       ],
       colour: "#7300e6",
       category: Blockly.Categories.more,
-      tooltip: "Send ETH: Transfer ether to the provided address.",
+      tooltip: "Atomic TIP: Tip the atomic team :)",
       extensions: ["shape_statement"],
     });
   },

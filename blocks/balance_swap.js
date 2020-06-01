@@ -1503,7 +1503,7 @@ Blockly.Blocks["balance_swap"] = {
    */
   init: function () {
     this.jsonInit({
-      message0: "%1 %2 swap %3 %4 for %5",
+      message0: "%1 %2 Swap %3 %4 for %5",
       args0: [{
           type: "field_image",
           src: "https://gblobscdn.gitbook.com/spaces%2F-LtMQYB90ZuO38aKDyto%2Favatar.png",
