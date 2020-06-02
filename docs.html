@@ -69,8 +69,8 @@
           <p><b>ERC20 transfer</b>: This block packs a transfer of 10 DAI to vitalik.eth.</p>
           <p><b>Uniswap V2 FlashSwap</b>: This is a sandwitch block, so it works in a particular way. It will call our flashswap proxy, that then will initiate the flashswap. The Uniswap exchange will than call back the proxy, that then sends the transactions packed inside the block back to the User's proxy contract for execution. After it executes all the transactions, it executes an additional transaction, that repays the flashloan.</p>
           <p><b>Aave Flashloan</b>: Also a sandwitch block, works exactly like the above.</p>
-          <p><b>🤑 Brag</b>: This block will call our brag smart contract, and register your balance at the time of the call.</p>
-          <p><b>Atomic Ninja Tip</b>: It just sends a small amount of ETH to our team (🍻).</p>
+          <p><b>Brag</b>: This block will call our brag smart contract, and register your balance at the time of the call.</p>
+          <p><b>Atomic Ninja Tip</b>: It just sends a small amount of ETH to our team.</p>
           <p><b>Pool Together</b>: It will send out a transaction to buy 10 tickets.</p>
           <p>Now both flashloans(swaps) end, they are both repayed (with fees).</p>
           <p><b>Compound Supply</b>: Supplies .5 ETH liquidity on Compound finance, receive cETH.</p>
