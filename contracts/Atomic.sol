@@ -8,20 +8,16 @@ interface IERC20 {
     function transfer(address recipient, uint256 amount) external returns (bool);
 }
 
-// atomicProxy CANNOT have a constructor, deployed code is used for deployment
 contract AtomicProxy {
     address payable public owner; 
     address payable public factory;
-    
-    constructor() public {
-        owner = tx.origin;
-        factory = msg.sender;
-    }
+    uint256 public time;
     
     receive() external payable {}
 
     fallback () external payable {
-        owner = msg.sender;
+        owner = tx.origin;
+        time =  now;
         (bool success, ) = factory.delegatecall(msg.data);
         if (!success) {
             assembly {
@@ -35,8 +31,12 @@ contract AtomicProxy {
 contract Atomic {
     address payable public owner = msg.sender;
     address payable private factory; //needed to keep the storage layout equal to AtomicProxy
+    uint256 public time;
+
     mapping (address => uint) public atomicNonce;
+    
     bytes proxyBytecode;
+    
     event atomicLaunch(address atomicContract);
     
     constructor (bytes memory _proxyBytecode) public {
@@ -63,7 +63,6 @@ contract Atomic {
                 revert(0, returndatasize())
             }
         }
-        // atomicInterface.drain(address(0));
     }
     
     function getNextAtomic(address _owner) public view returns (address) {
@@ -78,8 +77,7 @@ contract Atomic {
     }
     
     function execute(address[] calldata _to, uint[] calldata _value, bytes[] calldata _data) payable external returns (bool success) {
-        // require (time == now, "Execution can only be performed once");
-        owner = payable(_to[0]);
+        require (time == now, "Execution can only be performed once");
         for (uint i = 0; i < _data.length; i++) {
 
             // revert block
@@ -108,16 +106,4 @@ contract Atomic {
     fallback () external payable {
         revert("Not correctly encoded for execute or drain.");
     }
-}
-
-contract receiver {
-    
-    function balance() public view returns (uint) {
-        return address(this).balance;
-    }
-    
-    fallback () external payable {
-        // revert("fallback do receiver");
-    }
-    
 }
