@@ -317,24 +317,8 @@ const encodePayload = async (block) => {
 const sendAtomicTx = async function (value, gas, calldata) {
   try {
     // Standard metamask connect
-    // await ethereum.enable()
-    // const provider = new ethers.providers.Web3Provider(web3.currentProvider);
-
-    // Portis connect
-    const portis = new Portis(
-      "55e757b6-7fdb-4db2-a625-4d5e93bc29ae",
-      "mainnet"
-    );
-    const provider = new ethers.providers.Web3Provider(portis.provider);
-
-    await (async () => {
-      const accounts = await provider.listAccounts();
-      const balance = await provider.getBalance(accounts[0]);
-      const etherString = ethers.utils.formatEther(balance);
-      const networkName = provider.network.name;
-      document.getElementById("walletMsg").innerHTML = `
-            ${accounts[0]}`;
-    })();
+    await ethereum.enable()
+    const provider = new ethers.providers.Web3Provider(web3.currentProvider);
 
     // There is only ever up to one account in MetaMask exposed
     const signer = provider.getSigner();

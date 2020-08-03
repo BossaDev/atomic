@@ -33,13 +33,16 @@
   <script src="./blocks/atomic_tip.js"></script>
   <script src="./blocks/revert.js"></script>
   <script src="./blocks/ens_resolver.js"></script>
-
-
+  
   <script src="./js/toolbox.js"></script>
   <script src="./js/launchAtomic.js"></script>
   <script src="./js/simulateAtomic.js"></script>
+  <script src="./js/saveAtomic.js"></script>
   <script type="text/javascript" src="./js/lib/xmlToJSON.min.js"></script>
   <script type="text/javascript" src="./js/lib/picoModal-3.0.0.min.js"></script>
+  <script src="https://unpkg.com/ipfs-http-client@30.1.3/dist/index.js"></script>
+  <script type="text/javascript" src="./js/lib/buffer.js"></script>
+  <script src="./js/setup.js"></script>
 
   <!-- portis -->
   <script src="https://cdn.jsdelivr.net/npm/@portis/web3@2.0.0-beta.54/umd/index.js"
@@ -120,17 +123,14 @@
     #blocklyDiv {
       float: right;
       position: relative;
-      top: -28px;
-      height: 97%;
+      height: 100%;
       width: 100%;
     }
   </style>
 </head>
 
 <body onload="start()">
-  <div id="portis" style="position: relative; top: 10px; z-index: 11000; float: right;"><img
-      src="https://www.portis.io/static/logo-small.svg" style="position: relative; top: 5px;" width="25"
-      height="25">&nbsp;<span id="walletMsg">Not Connected</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
   <div id="blocklyDiv"></div>
 </body>
 
