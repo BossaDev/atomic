@@ -12,7 +12,7 @@ Blockly.Blocks["revert"] = {
         {
           type: "field_image",
           src:
-            "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/skull-and-crossbones_2620.png",
+            "./media/revert.png",
           width: 30,
           height: 30,
         },

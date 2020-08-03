@@ -17,7 +17,7 @@ const bragger = {
       message0: "%1 %2 Brag",
       args0: [{
           type: "field_image",
-          src: "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/money-mouth-face_1f911.png",
+          src: "./media/atomic_brag.png",
           width: 33,
           height: 33,
         },

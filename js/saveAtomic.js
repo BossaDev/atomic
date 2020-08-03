@@ -42,7 +42,7 @@ const shareAtomic = () => {
             console.log(result)
             console.log('https://ipfs.io/ipfs/' + result[0].hash)
             copyToClipboard("https://atomic.ninja/?&tx=" + result[0].hash)
-            alert("URL copied to clipboard. Paste it anywhere to share it.")
+            alert("URL copied to clipboard. Paste it anywhere to share it. \n\n It's on IPFS, so if you want it to persist overtime you have to pin it. We recomment https://pinata.cloud/, they allow for pinning of thousasnds of transactions in their free tier. That said, your transaction should be good for the coming days. \n\n The IPFS hash of the transaction is: " + result[0].hash)
 
             // copying to clipboard
 

@@ -40,32 +40,32 @@ cats +=
   "</category>";
 
 cats +=
-  '<category name="Uniswap" id="Uniswap" iconURI="https://uniswap.org/icons/icon-48x48.png?v=d5f2a6c635dd3cc8d3d91b3fde72085d" >' +
+  '<category name="Uniswap" id="Uniswap" iconURI="./media/uniswapToolbox.png" >' +
   categories["Uniswap"] +
   "</category>";
 
 cats +=
-  '<category name="Aave" id="Aave" iconURI="https://aave.com/static/media/ghostLogo.2eb73471.svg">' +
+  '<category name="Aave" id="Aave" iconURI="./media/AaveGhostVertical.svg">' +
   categories["Aave"] +
   "</category>";
 
 cats +=
-  '<category name="Compound" id="Compound Finance" iconURI="https://compound.finance/images/compound-mark.svg">' +
+  '<category name="Compound" id="Compound Finance" iconURI="./media/compound.svg">' +
   categories["Compound Finance"] +
   "</category>";
 
 cats +=
-  '<category name="Defi Zaps" id="DeFi Zaps" iconURI="https://defizap.com/static/media/save-gas.81e35b11.svg">' +
+  '<category name="Defi Zaps" id="DeFi Zaps" iconURI="./media/defiZaps.png">' +
   categories["DeFi Zaps"] +
   "</category>";
 
 cats +=
-  '<category name="Balancer" id="Balancer" iconURI="https://gblobscdn.gitbook.com/spaces%2F-LtMQYB90ZuO38aKDyto%2Favatar.png">' +
+  '<category name="Balancer" id="Balancer" iconURI="./media/balancer.png">' +
   categories["Balancer"] +
   "</category>";
 
 cats +=
-  '<category name="Pool Together" id="Pool Together" iconURI="https://user-images.githubusercontent.com/35717/66861883-ae253780-ef44-11e9-9d04-b9397c26dbaf.png">' +
+  '<category name="Pool Together" id="Pool Together" iconURI="./media/pooltogetherCategory.png">' +
   categories["Pool Together"] +
   "</category>";
 cats +=

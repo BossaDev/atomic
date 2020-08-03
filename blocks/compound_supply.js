@@ -8,7 +8,7 @@ const compound_supply = {
       args0: [
         {
           type: "field_image",
-          src: "https://compound.finance/images/compound-mark.svg",
+          src: "./media/compound.svg",
           width: 40,
           height: 40,
         },
