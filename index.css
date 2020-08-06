@@ -1,0 +1,87 @@
+
+
+/** Buttons */
+.btn-toggler,
+.btn-link {
+    outline-width: 0 !important;
+    background-color: transparent;
+    font-family: arial, sans-serif;
+}
+
+.btn-link {
+    font-size: 16px;
+    border-width: 0;
+    padding: 0;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.btn-toggler {
+    font-size: 1.5rem;
+    line-height: 1;
+    text-transform: uppercase;
+    padding: 0.25rem 0.5rem;
+    min-width: 50px;
+    color: tomato;
+    border: 2px solid currentColor;
+}
+
+.btn-toggler:not(:last-of-type) {
+    margin-right: 0.5rem;
+}
+
+.btn-menu[aria-expanded='true'],
+.btn-close[aria-expanded='false'] {
+    display: none;
+}
+
+.btn-submenu span {
+    font-size: 0.5em;
+    line-height: 1.75;
+}
+
+/** Nav menus */
+.nav-menu ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+}
+
+.nav-menu a,
+.nav-menu .btn-link {
+    display: flex;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    width: 100%;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: tomato;
+}
+
+.nav-menu a:hover,
+.nav-menu .btn-link:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/** Hide element */
+.hide {
+    display: none !important;
+}
+
+/** Media breakpoints */
+@media (min-width: 768px) {
+    .d-md-none {
+        display: none;
+    }
+
+    /** Show nav menu */
+    .nav-menu {
+        display: flex !important;
+    }
+
+    /** Display menu items horizonatally */
+    .nav-menu>ul {
+        flex-direction: row;
+    }
+}

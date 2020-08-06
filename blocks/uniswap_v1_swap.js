@@ -9,7 +9,7 @@ Blockly.Blocks["uniswap_v1_swap"] = {
         {
           type: "field_image",
           src:
-            "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/unicorn-face_1f984.png",
+            "./media/uniswapV1.png",
           width: 40,
           height: 40,
         },

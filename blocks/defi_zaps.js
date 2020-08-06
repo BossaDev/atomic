@@ -8,7 +8,7 @@ const defi_zaps = {
       args0: [
         {
           type: "field_image",
-          src: "https://defizap.com/static/media/save-gas.81e35b11.svg",
+          src: "./media/defiZaps.png",
           width: 40,
           height: 40,
         },
@@ -24,7 +24,7 @@ const defi_zaps = {
           name: "TO",
         },
       ],
-      colour: "#660000",
+      colour: "#704CFE",
       category: Blockly.Categories.more,
       tooltip:
         "Defi Zaps: Choose one Zap on the dropdown and the value to supply liquidity to Uniswap pools and more.",

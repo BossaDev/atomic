@@ -9,7 +9,7 @@ const poolTogether_ticket = {
         {
           type: "field_image",
           src:
-            "https://www.pooltogether.com/_next/static/images/pool-together--purple-wordmark-8040268169fe12bd47b82655dc0923ce.svg",
+            "./media/pooltogetherBlock.svg",
           width: 40,
           height: 40,
         },
@@ -21,7 +21,7 @@ const poolTogether_ticket = {
           name: "VAL",
         },
       ],
-      colour: "#404142",
+      colour: "#793DF6",
       category: Blockly.Categories.more,
       tooltip: "Pool Together Ticket: Buy tickets from Pool together.",
       extensions: ["shape_statement", "scratch_extension"],

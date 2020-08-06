@@ -34,16 +34,15 @@
   <script src="./blocks/revert.js"></script>
   <script src="./blocks/ens_resolver.js"></script>
 
-
   <script src="./js/toolbox.js"></script>
   <script src="./js/launchAtomic.js"></script>
   <script src="./js/simulateAtomic.js"></script>
+  <script src="./js/saveAtomic.js"></script>
   <script type="text/javascript" src="./js/lib/xmlToJSON.min.js"></script>
   <script type="text/javascript" src="./js/lib/picoModal-3.0.0.min.js"></script>
-
-  <!-- portis -->
-  <script src="https://cdn.jsdelivr.net/npm/@portis/web3@2.0.0-beta.54/umd/index.js"
-    integrity="sha256-pPwrJF/X2v9erIHBoY3ZWb4P/cRx3j3/zyvQvycabs0=" crossorigin="anonymous"></script>
+  <script src="./js/lib/ipfs-htttp-client.js"></script>
+  <script type="text/javascript" src="./js/lib/buffer.js"></script>
+  <script src="./js/setup.js"></script>
 
   <script>
     'use strict';
@@ -112,7 +111,7 @@
     html,
     body {
       height: 100%;
-      background-color: #fff;
+      background-color: lightgrey;
       font-family: sans-serif;
       overflow: hidden;
     }
@@ -120,17 +119,82 @@
     #blocklyDiv {
       float: right;
       position: relative;
-      top: -28px;
-      height: 97%;
+      height: 90%;
       width: 100%;
+      z-index: 100;
+    }
+
+    .menu {
+      list-style: none;
+      border: 0px solid #c0c0c0;
+      float: left;
+      z-index: 101 !important;
+    }
+
+    .menu li {
+      position: relative;
+      float: left;
+      border-right: 0px solid #c0c0c0;
+      z-index: 101 !important;
+    }
+
+    .menu li a {
+      color: #333;
+      text-decoration: none;
+      padding: 5px 10px;
+      display: block;
+    }
+
+    .menu li a:hover {
+      background: #333;
+      color: #fff;
+      -moz-box-shadow: 0 3px 10px 0 #CCC;
+      -webkit-box-shadow: 0 3px 10px 0 #ccc;
+      text-shadow: 0px 0px 5px #fff;
+    }
+
+    .menu li ul {
+      position: absolute;
+      top: 25px;
+      left: 0;
+      background-color: #fff;
+      display: none;
+    }
+
+    .menu li:hover ul,
+    .menu li.over ul {
+      display: block;
+    }
+
+    .menu li ul li {
+      border: 0px solid #c0c0c0;
+      display: block;
+      width: 150px;
     }
   </style>
 </head>
 
 <body onload="start()">
-  <div id="portis" style="position: relative; top: 10px; z-index: 11000; float: right;"><img
-      src="https://www.portis.io/static/logo-small.svg" style="position: relative; top: 5px;" width="25"
-      height="25">&nbsp;<span id="walletMsg">Not Connected</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+  <nav>
+    <ul class="menu">
+      <li><img src='./media/atomic-ninja-icon.png' style="width: 30px; margin-right: 25px; position: relative; top: -4px;">
+      </li>
+      <li><a href="#">Transaction</a>
+        <ul>
+          <li><a href="#" onclick="saveAtomic()">Save</a></li>
+          <li><a href="#" onclick="openAtomic()">Open</a></li>
+          <li><a href="#" onclick="shareAtomic()">Share</a></li>
+          <li><a href="#">Embed</a></li>
+        </ul>
+      </li>
+      <li><a
+          href="./docs.html">Docs</a>
+      </li>
+      <li><a
+        href="mailto:info@atomic.ninja">Contact</a>
+    </li>
+    </ul>
+  </nav>
   <div id="blocklyDiv"></div>
 </body>
 
