@@ -26,6 +26,11 @@ const openAtomic = (txName) => {
     Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml)
 }
 
+const openMenu = () => {
+    let txName = prompt("Please type the name of the tx to open (we'll improve this soon).", "My Atomic Tx");
+    openAtomic(txName)
+}
+
 const shareAtomic = () => {
     const ipfs = IpfsHttpClient('ipfs.infura.io', '5001', {
         protocol: "https"
