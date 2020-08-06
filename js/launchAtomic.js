@@ -316,6 +316,8 @@ const encodePayload = async (block) => {
 
 const sendAtomicTx = async function (value, gas, calldata) {
   try {
+
+    console.log(window)
     // Standard metamask connect
     await ethereum.enable()
     const provider = new ethers.providers.Web3Provider(web3.currentProvider);
