@@ -24,13 +24,12 @@
 
     <h2>Motivation</h2>
     <p>Some say that flashloans democratize access to large amounts of capital, but that is not entirely true, until they are useable by the average investor. Nowadays to access the feature one needs deep technical logic, and good coding skills. Atomic will put this and other great tools in the hands of a lot more users.</p>
-    <p>This was a hack in the hackathon.money hackathon by ETHGlobal.</p>
 
     <h2>Tech Stack</h2>
     <p>We started with just one smart contract, that would send one transaction after another on behalf of the user. The atomic functionality is still contained in a single contract, that creates proxies for user using CREATE2 (addresses are unique per user). We also had to develop a proxy contract for all "sandwich" blocks, or blocks that need to handle a callback like flashloans.</p>
     <p>We used Buidler to perform tests, also using a fork from the mainnet in Ganache.</p>
     <p>For the UI we forked scratch-blocks, and tweaked for our needs (removing all blocks provided by the library and adding our own, plus some other small mods). We made those changes with extensibility in mind. Each block lives in a single JS file, the way we envision this in the future is that companies will pull request blocks that use their platforms.</p>
-    <p>We also of course used Ethers JS extensively for encoding a bunch of data and any interaction with Web3, and our choice of wallet was Portis.</p>
+    <p>We also of course used Ethers JS extensively for encoding a bunch of data and any interaction with Web3.</p>
     <p>Currently there are bocks for ETH transfers, ERC20 Transfers, Uniswap swap (V1 and V2) and flashswap, Aave flashloan, Compound supplying and borrowing, Pooltogether, Defi Zaps, Balancer and an ENS resolver.</p>
     <p>The dapp is served from IPFS (pinned on Pinata), and is available at <a href="http://atomicninja.eth.link" target="_blank">atomicninja.eth</a> and <a href="https://atomic.ninja" target="_blank">atomic.ninja</a>.</p>
 
@@ -57,6 +56,19 @@
     <p>Press this button to simulate the call. Your call to the atomic contract will be encoded exactly as when you send it, but will be sent  unsigned to a public node. This will indicate if the transaction will fail or succeed using the state of the latest mainnet block. Currently no feedback on failure is provided (the node provides no details on failures), if your transaction is failing, take a look and check if all your blocks have the funds to perform their action at the point of execution.</p>
     <h3><img src='./media/zoom-launchAtomic.svg'> Launch Atomic Tx</h3>
     <p>Lift off! Use this button to send out your atomic (mainnet only). This is currently disabled as we feel  the tool is not ready to handle funds. Remember, this is hackathon code.</p>
+    <h3>Transaction Menu</h3>
+    <h4>Save</h4>
+    <p>Will save the transaction to your local storage (no servers unfortunately :) so if you want to open the transaction in a different device you'll need to share it).</p>
+    <h4>Open</h4>
+    <p>You'll be presented with a list of previously saved ninja transactions.</p>
+    <h4>Share</h4>
+    <p>Sharing allows you to send a url out to friends or in social media. When you press share, your transaction will be uploaded to IPFS. The link to open it is copied to your clipboard, so you can paste it anywhere.</p>
+    <p>Remember that IPFS is efemeral by nature, if your transaction is not used for long enough the files will no longer be available. If you need your transactions to persist (if embedding in your website for example), we recommend using <a href="https://pinata.cloud" target="_blank">IPFS Pinata</a>, they provide 1gb in their free tier, enough for millions of ninja transactions. Our front end is pinned in their free tier :)</p>
+    <h4>Embed</h4>
+    <p>This allows you to embed any transaction in your website. Embeded transactions are not editable by nature, but if the user clicks on the Atomic Ninja icon he will be taken to a full fledged editor. This features works particularly well on mobile.</p>
+    <p>Funcitonal example (thank you for sending this one out 😊):</p>
+    <iframe width="560" height="315" src="./index.html?&tx=QmQxEnYR2ztMah5eTjRekbQkgZ74iv97BqSrifPjSf1kZb&embed=true" frameborder="0" allowfullscreen></iframe>
+
 
     <h2>How it works</h2>
     <p>When you start a ninja transaction a call is made for the atomic smart contract. It then creates a proxy for the user (using Create2, proxy addresses are unique per user) that then sequentially executes the transactions. Let's look with more detail into an actual transaction:</p>
@@ -83,7 +95,7 @@
     <h2>Launch vs. Simulate</h2>
     <p>Both will pack the transactions the exact same way.</p>
     <p>When you press simulate, atomic sends an eth_call (the one used to read from smart contracts) to a public node, the return value will tell you if it succeeds. If it fails, we made some EVM hackery to return the revert message from the <i>original</i> revert. This means that you will see a revert message from DAI smart contract for failed transfers. Some contracts of course will not have a message, and then you will see a generic error. Failed ETH transfers also do not give any feedback. We have already nailed how to present to the user the block in which the ninja tx failed, but have yet to implement it.</p>
-    <p>When you press launch, you will be prompted to sign the transaction, and it will be bradcasted by Portis.</p>
+    <p>When you press launch, you will be prompted to sign the transaction. Lift off 🚀!</p>
     
     <p>We sent the above example out, you can check it on <a href="https://etherscan.io/tx/0x72b7156c60d8a94fa074497c360e20cb96b02d85b45e13a137049fa3a469d38f" target="_blank">Etherscan</a> or with much more detail on <a href="https://dashboard.tenderly.co/tx/main/0x72b7156c60d8a94fa074497c360e20cb96b02d85b45e13a137049fa3a469d38f" target="_blank">Tenderly</a>.</p>
     <p>Below are the Etherscan verified contracts the transaction interacted with, also courtesy of Tenderly:</p>

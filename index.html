@@ -7,6 +7,18 @@
 
   <title>Atomic Ninja</title>
 
+  <script>
+    var loc = window.location.href + '';
+    if (loc.indexOf('http://') == 0 &&
+      !(loc.indexOf('http://localhost:8000/') == 0 ||
+        loc.indexOf('http://0.0.0.0:8000/') == 0 ||
+        loc.indexOf('file:///') == 0)
+    ) {
+      console.log("Redirecting to SSL connection.")
+      window.location.href = loc.replace('http://', 'https://');
+    }
+  </script>
+
   <!-- This exposes the library as a global variable: ethers -->
   <script src="./js/lib/ethers.min.js" charset="utf-8" type="text/javascript"></script>
   <script src="./js/lib/blockly_compressed_vertical.js"></script>
@@ -44,74 +56,11 @@
   <script type="text/javascript" src="./js/lib/buffer.js"></script>
   <script src="./js/setup.js"></script>
 
-  <script>
-    'use strict';
-
-    var loc = window.location.href + '';
-    if (loc.indexOf('http://') == 0 &&
-      !(loc.indexOf('http://localhost:8000/') == 0 ||
-        loc.indexOf('http://0.0.0.0:8000/') == 0 ||
-        loc.indexOf('file:///') == 0)
-    ) {
-      console.log("Redirecting to SSL connection.")
-      window.location.href = loc.replace('http://', 'https://');
-    }
-
-    var workspace = null;
-
-    function start() {
-
-      // Create main workspace.
-      workspace = Blockly.inject('blocklyDiv', {
-        comments: true,
-        disable: false,
-        collapse: false,
-        media: './media/',
-        readOnly: false,
-        rtl: null,
-        scrollbars: true,
-        toolbox: getToolboxElement(),
-        toolboxPosition: "start",
-        horizontalLayout: false,
-        sounds: true,
-        zoom: {
-          controls: true,
-          wheel: true,
-          startScale: 0.85,
-          maxScale: 4,
-          minScale: 0.25,
-          scaleSpeed: 1.1
-        },
-        colours: {
-          fieldShadow: 'rgba(255, 255, 255, 0.3)',
-          dragShadowOpacity: 0.6
-        }
-      });
-
-      picoModal(
-        "<h2>Welcome to Atomic Ninja!</h2>" +
-        "<p>Send complex atomic transactions to Ethereum like never before.</p>" +
-        "<h3>Quick Start</h3>" +
-        "<p>On the left of the screen there is a list of sorted, disconnected blocks. This is your <b>toolbox</b>.</p>" +
-        "<p>Drag the blocks to the <b>workspace</b> at the right, join them and edit their parameters to perform the actions you´d like.</p>" +
-        "<p>Start with a hat shaped block such as <img src='./media/hatblock.png' style='width: 11%;'>, as they indicate the beginning of your transaction.</p>" +
-        "<p>Once you are done, press <img src='./media/zoom-simulateAtomic.svg'> to simulate your transaction, and <img src='./media/zoom-launchAtomic.svg'> to send it out!</p>" +
-        "<p><b>Tip:</b> Hover the blocks for details on how they work.</p>" +
-        "<p>For more details, head over to the <a href='./docs.html'>Atomic documentation</a>.</p>"
-      ).show();
-    }
-
-    function getToolboxElement() {
-      var match = location.search.match(/toolbox=([^&]+)/);
-      return document.getElementById('toolbox-' + (match ? match[1] : 'categories'));
-    }
-  </script>
-
   <style>
     html,
     body {
       height: 100%;
-      background-color: lightgrey;
+      background-color: transparent;
       font-family: sans-serif;
       overflow: hidden;
     }
@@ -174,25 +123,28 @@
   </style>
 </head>
 
-<body onload="start()">
-  <nav>
+<body onload="setup()">
+  <div id="embedLogo">
+    <a id="embedLink" href="#" target="_blank"><img src='./media/atomic-ninja-icon.png'
+          style="width: 30px; position: relative; top: 20px; left: 10px; z-index: 101 !important;"></a>
+  </div>
+  <nav id="navbar">
     <ul class="menu">
-      <li><img src='./media/atomic-ninja-icon.png' style="width: 30px; margin-right: 25px; position: relative; top: -4px;">
+      <li><img src='./media/atomic-ninja-icon.png'
+          style="width: 30px; margin-right: 25px; position: relative; top: -4px;">
       </li>
       <li><a href="#">Transaction</a>
         <ul>
           <li><a href="#" onclick="saveAtomic()">Save</a></li>
           <li><a href="#" onclick="openMenu()">Open</a></li>
           <li><a href="#" onclick="shareAtomic()">Share</a></li>
-          <li><a href="#">Embed</a></li>
+          <li><a href="#" onclick="embedAtomic()">Embed</a></li>
         </ul>
       </li>
-      <li><a
-          href="./docs.html">Docs</a>
+      <li><a href="./docs.html">Docs</a>
       </li>
-      <li><a
-        href="mailto:info@atomic.ninja">Contact</a>
-    </li>
+      <li><a href="mailto:info@atomic.ninja">Contact</a>
+      </li>
     </ul>
   </nav>
   <div id="blocklyDiv"></div>
